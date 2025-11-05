@@ -1,0 +1,30 @@
+
+services:
+  fleischkaese-app:
+    # Docker soll ein Image aus dem aktuellen Verzeichnis erstellen.
+    build: .
+    container_name: fleischkaese-app
+    # Starte den Container neu, falls er abstürzt
+    restart: unless-stopped
+    ports:
+      # Exponiere den Port 5000 des Containers zum Host, damit der Tunnel darauf zugreifen kann.
+      - "5000:5000"
+    volumes:
+      # Das ist sehr wichtig: Speichere die orders.json Datei
+      # in einem persistenen Volume außerhalb des Containers.
+      # So gehen deine Bestellungen bei einem Neustart nicht verloren.
+      - ./orders.json:/app/orders.json
+
+  cloudflared-tunnel:
+    # Verwende das offizielle cloudflared Docker-Image
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    # Abhängigkeit zur Haupt-App. Der Tunnel startet erst, wenn die App läuft.
+    depends_on:
+      - fleischkaese-app
+    # Korrektur: Setze nur das Cloudflare-Tunnel-Token als Umgebungsvariable
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiNmFjYmQzMzg2YzgwMmI5NDI2MTE0YjdlNDhkNGM1NWYiLCJ0IjoiNTdjNmFhMjMtYjQ1My00MjU3LWJhMWMtMGFkMjlmYTJiOTcyIiwic2VjIjoiYmNmN2I4OGYwZmM4MjcxMzZkMTFmZjM4Y2IwYTQ0NWY1NzhlMzg0NmMxNmE3ZDcyY2Y1NjEwNzFmYzEwZmIyZiJ9
+    # Korrektur: Führe den Tunnel-Befehl aus
+    command: tunnel --no-autoupdate run

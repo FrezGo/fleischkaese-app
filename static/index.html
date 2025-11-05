@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Bestellsystem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Fleischkäse</h1>
+        <p>Deine Wünsche, unsere Mission - jetzt bestellen!</p>
+    </header>
+
+    <main>
+        <section id="leaderboard">
+            <h2>Fleischkäse-Leaderboard</h2>
+            <div class="leaderboard-content">
+                <p id="no-leaderboard-data">Noch keine Bestellungen erfasst.</p>
+                <ul id="leaderboard-list">
+                    <!-- Leaderboard-Einträge werden hier von JavaScript eingefügt -->
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <main>
+        <section id="menu">
+            <h2>Fleischkäse-Menü</h2>
+
+            <div class="menu-category">
+                <div id="fleischkaese-configurations">
+                    <div class="fleischkaese-config-container">
+                        <div class="config-header">
+                            <h4>Fleischkäse-Konfiguration</h4>
+                            <button type="button" class="remove-config-btn">Entfernen</button>
+                        </div>
+                        <div class="menu-item" data-name="Fleischkäse">
+                            <label>
+                                <input type="checkbox" data-name="Fleischkäse" checked> Fleischkäse - 1,50€
+                            </label>
+                            <div class="item-controls">
+                                <div class="quantity-input-container">
+                                    <button type="button" class="quantity-button minus" data-item="Fleischkäse">-</button>
+                                    <input type="number" value="1" min="0" class="quantity-input" data-name="Fleischkäse">
+                                    <button type="button" class="quantity-button plus" data-item="Fleischkäse">+</button>
+                                </div>
+                            </div>
+                            <div class="condiments">
+                                <label><input type="checkbox" name="condiment" value="Ketchup"> Ketchup</label>
+                                <label><input type="checkbox" name="condiment" value="Senf"> Senf</label>
+                            </div>
+                            <div class="sold-out-overlay" style="display: none;">
+                                <span>Ausverkauft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="add-config-btn">Neue Konfiguration</button>
+            </div>
+        </section>
+
+        <section id="order-summary">
+            <h2>Ihre Auswahl</h2>
+            <ul id="selected-items">
+                <li>Noch keine Artikel ausgewählt.</li>
+            </ul>
+            <div id="order-total">
+                <p>Gesamt: <span id="total-price">0,00€</span></p>
+            </div>
+        </section>
+
+        <section id="customer-info">
+            <h2>Ihre Daten</h2>
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="customer-name">Ihr Name:</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="tip">Trinkgeld (€):</label>
+                    <input type="number" id="tip" min="0" step="0.10" value="0">
+                </div>
+                <button type="submit">Bestellung abschicken</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mein Restaurant</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

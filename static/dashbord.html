@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Küchen-Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashbord.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Küchen-Dashboard</h1>
+        <p>Aktuelle Bestellungen</p>
+    </header>
+
+    <main>
+        <section id="orders-list">
+            <h2>Offene Bestellungen</h2>
+            <div id="no-orders-message">Keine neuen Bestellungen.</div>
+            <div class="orders-container">
+            </div>
+        </section>
+
+        <section id="leaderboard">
+            <h2>Fleischkäse-Leaderboard</h2>
+            <div id="leaderboard-container">
+                <!-- Leaderboard-Daten werden hier dynamisch eingefügt -->
+            </div>
+        </section>
+
+        <section id="sold-out-management">
+            <h2>Artikel-Verwaltung (Ausverkauft-Status)</h2>
+            <div id="menu-items-status-container" class="orders-container">
+                <!-- Artikel-Status-Karten werden hier von kitchen.js eingefügt -->
+                <p id="no-menu-items-message" style="display: none; text-align: center; font-size: 1.2em; color: #777; padding: 20px;">
+                    Keine Menüartikel verfügbar.
+                </p>
+            </div>
+        </section>
+
+        <section id="acceptance-days-management">
+            <h2>Annahmetage verwalten</h2>
+            <div id="acceptance-days-container" class="orders-container">
+                <form id="acceptance-days-form">
+                    <div class="form-group">
+                        <label><input type="checkbox" name="acceptance-day" value="monday"> Montag</label>
+                        <label><input type="checkbox" name="acceptance-day" value="tuesday"> Dienstag</label>
+                        <label><input type="checkbox" name="acceptance-day" value="wednesday"> Mittwoch</label>
+                        <label><input type="checkbox" name="acceptance-day" value="thursday"> Donnerstag</label>
+                        <label><input type="checkbox" name="acceptance-day" value="friday"> Freitag</label>
+                        <label><input type="checkbox" name="acceptance-day" value="saturday"> Samstag</label>
+                        <label><input type="checkbox" name="acceptance-day" value="sunday"> Sonntag</label>
+                    </div>
+                    <button type="submit">Speichern</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mein Restaurant - Küche</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='dashbord.js') }}"></script>
+</body>
+</html>
