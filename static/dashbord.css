@@ -383,6 +383,37 @@ footer {
 }
 
 #acceptance-days-container button:hover {
-    background-color: #45a049;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#leaderboard-container {
+    margin-top: 20px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.leaderboard-table th {
+    background-color: #f2f2f2;
+}
+
+.leaderboard-actions button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+.leaderboard-actions button:hover {
+    background-color: #ddd;
 }

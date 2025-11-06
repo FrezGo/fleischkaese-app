@@ -9,6 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const tipInput = document.getElementById('tip');
     const leaderboardList = document.getElementById('leaderboard-list');
     const noLeaderboardDataMessage = document.getElementById('no-leaderboard-data');
+    const acceptanceDaysList = document.getElementById('acceptance-days-list');
+
+    async function fetchAndRenderAcceptanceDays() {
+        try {
+            const response = await fetch('/api/acceptance_days');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const acceptanceDays = await response.json();
+            if (acceptanceDays.length > 0) {
+                acceptanceDaysList.textContent = acceptanceDays.join(', ');
+            } else {
+                acceptanceDaysList.textContent = 'Heute geschlossen';
+            }
+        } catch (error) {
+            console.error('Fehler beim Laden der Annahmetage:', error);
+            acceptanceDaysList.textContent = 'Fehler beim Laden der Annahmetage.';
+        }
+    }
+
 
     function updateOrderSummary() {
         selectedItemsList.innerHTML = '';
@@ -277,4 +297,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateOrderSummary();
     fetchAndRenderLeaderboard();
+    fetchAndRenderAcceptanceDays();
 });
