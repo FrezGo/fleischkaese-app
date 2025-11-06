@@ -6,15 +6,11 @@ services:
     container_name: fleischkaese-app
     restart: unless-stopped
     ports:
-      # Nur benötigt, wenn Sie die App direkt von TrueNAS aus testen wollen,
-      # aber unschädlich, da der Cloudflared Tunnel interne Kommunikation nutzt.
       - "5000:5000"
     volumes:
-      # WICHTIG: Ersetzen Sie /mnt/Poolname/Pfad/ durch Ihren echten Pfad auf TrueNAS
-      - /mnt/Pool-1-Homestorrage/App-Daten/fleischkaese-app/orders.json:/app/orders.json
-      # Die zweite Persistenzdatei hinzufügen:
-      - /mnt/Pool-1-Homestorrage/App-Daten/fleischkaese-app/acceptance_days.json:/app/acceptance_days.json
-    # Network-Mode auf "bridge" lassen (Standard)
+      # ACHTUNG: Der korrekte Pfad im 'stacks'-Dataset
+      - /mnt/Pool-1-Homestorrage/stacks/fleischkaese-app/orders.json:/app/orders.json
+      - /mnt/Pool-1-Homestorrage/stacks/fleischkaese-app/acceptance_days.json:/app/acceptance_days.json # Die zweite Datei
 
   cloudflared-tunnel:
     image: cloudflare/cloudflared:latest
@@ -22,7 +18,7 @@ services:
     restart: unless-stopped
     depends_on:
       - fleischkaese-app
-    # Sicherer: Laden Sie den Token aus der cloudflared.env-Datei
+    # Sicher: Lädt den Token aus der cloudflared.env-Datei (ersetzt 'environment:')
     env_file:
       - ./cloudflared.env
     command: tunnel --no-autoupdate run
