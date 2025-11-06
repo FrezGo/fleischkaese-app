@@ -5,6 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuItemsStatusContainer = document.getElementById('menu-items-status-container');
     const noMenuItemsMessage = document.getElementById('no-menu-items-message');
     const acceptanceDaysForm = document.getElementById('acceptance-days-form');
+    const totalEarningsAmount = document.getElementById('total-earnings-amount');
+
+    async function fetchAndRenderTotalEarnings() {
+        try {
+            const response = await fetch('/api/total-earnings');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            totalEarningsAmount.textContent = `${data.total_earnings.toFixed(2).replace('.', ',')}€`;
+        } catch (error) {
+            console.error('Fehler beim Laden der Gesamteinnahmen:', error);
+            totalEarningsAmount.textContent = 'Fehler';
+        }
+    }
+
 
     async function fetchAndRenderOrders() {
         try {
@@ -372,9 +388,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(fetchAndRenderMenuItemsStatus, 10000);
     setInterval(fetchAndRenderLeaderboard, 5000);
     setInterval(fetchAndRenderAcceptanceDays, 10000);
+    setInterval(fetchAndRenderTotalEarnings, 5000);
 
     fetchAndRenderOrders();
     fetchAndRenderMenuItemsStatus();
     fetchAndRenderLeaderboard();
     fetchAndRenderAcceptanceDays();
+    fetchAndRenderTotalEarnings();
 });

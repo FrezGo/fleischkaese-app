@@ -123,6 +123,38 @@ document.addEventListener('DOMContentLoaded', () => {
         updateOrderSummary();
     }
 
+    function resetConfigurations() {
+        configurationsContainer.innerHTML = ''; // Vorherige Konfigurationen löschen
+        const defaultConfig = document.createElement('div');
+        defaultConfig.classList.add('fleischkaese-config-container');
+        defaultConfig.innerHTML = `
+            <div class="config-header">
+                <h4>Fleischkäse-Konfiguration</h4>
+                <button type="button" class="remove-config-btn">Entfernen</button>
+            </div>
+            <div class="menu-item" data-name="Fleischkäse">
+                <label>
+                    <input type="checkbox" data-name="Fleischkäse" checked> Fleischkäse - 1,50€
+                </label>
+                <div class="item-controls">
+                    <div class="quantity-input-container">
+                        <button type="button" class="quantity-button minus" data-item="Fleischkäse">-</button>
+                        <input type="number" value="1" min="0" class="quantity-input" data-name="Fleischkäse">
+                        <button type="button" class="quantity-button plus" data-item="Fleischkäse">+</button>
+                    </div>
+                </div>
+                <div class="condiments">
+                    <label><input type="checkbox" name="condiment" value="Ketchup"> Ketchup</label>
+                    <label><input type="checkbox" name="condiment" value="Senf"> Senf</label>
+                </div>
+                <div class="sold-out-overlay" style="display: none;">
+                    <span>Ausverkauft</span>
+                </div>
+            </div>
+        `;
+        attachEventListeners(defaultConfig);
+        configurationsContainer.appendChild(defaultConfig);
+    }
     addConfigBtn.addEventListener('click', addNewConfiguration);
 
     document.querySelectorAll('.fleischkaese-config-container').forEach(container => {
@@ -233,8 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Ihre Bestellung wurde erfolgreich aufgegeben! Bestell-ID: ' + data.orderId);
 
             orderForm.reset();
-            configurationsContainer.innerHTML = '';
-            addNewConfiguration();
+            resetConfigurations();
             updateOrderSummary();
             fetchAndRenderLeaderboard();
 

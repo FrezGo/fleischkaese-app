@@ -262,5 +262,12 @@ def update_acceptance_days():
 
     return jsonify({"message": "Acceptance days updated successfully"}), 200
 
+@app.route('/api/total-earnings', methods=['GET'])
+def get_total_earnings():
+    total_earnings = 0
+    for order in orders_db:
+        total_earnings += order.get('total_price', 0)
+    return jsonify({"total_earnings": total_earnings}), 200
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
