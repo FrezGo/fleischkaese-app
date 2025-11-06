@@ -11,9 +11,9 @@ services:
       - "5000:5000"
     volumes:
       # WICHTIG: Ersetzen Sie /mnt/Poolname/Pfad/ durch Ihren echten Pfad auf TrueNAS
-      - /mnt/Poolname/App-Daten/fleischkaese-app/orders.json:/app/orders.json
+      - /mnt/Pool-1-Homestorrage/App-Daten/fleischkaese-app/orders.json:/app/orders.json
       # Die zweite Persistenzdatei hinzufügen:
-      - /mnt/Poolname/App-Daten/fleischkaese-app/acceptance_days.json:/app/acceptance_days.json
+      - /mnt/Pool-1-Homestorrage/App-Daten/fleischkaese-app/acceptance_days.json:/app/acceptance_days.json
     # Network-Mode auf "bridge" lassen (Standard)
 
   cloudflared-tunnel:
