@@ -1,14 +1,14 @@
 /* Farbpalette und Design-Token */
 :root {
     --primary: #003366; /* Marineblau - Header/UI */
-    --secondary: #4a729b; /* Frisches Grün - Akzente/CTA */
+    --secondary: #66BB6A; /* Frisches Grün - Akzente/CTA */
     --surface: #F5F5F5; /* Dühnes Grau - Hintergrund */
     --text: #4A4A4A; /* Mittleres Grau - Text */
     --muted: #8a8a8a; /* Gedämpftes Grau */
     --border: #e0e0e0; /* Dezente Ränder */
     --shadow: 0 8px 20px rgba(0,51,102,0.06);
-    --radius-md: 12px;
-    --radius-sm: 8px;
+    --radius-md: 15px;
+    --radius-sm: 10px;
     
     /* Pill-spezifische Variablen */
     --pill-color-blue: var(--primary);
@@ -499,8 +499,7 @@ footer {
     gap: 10px;
     margin-top: 12px;
     padding: 8px;
-    border-radius: var(--radius-sm);
-    background-color: var(--surface);
+    border-radius: 9999px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -543,17 +542,17 @@ footer {
 /* Animation Keyframes */
 @keyframes splash-checkbox {
     40% {
-        background: #E5E7EB;
-        box-shadow: 
-            0 -12px 0 -6px #E5E7EB,
-            10px -5px 0 -6px #E5E7EB,
-            10px 5px 0 -6px #E5E7EB,
-            0 12px 0 -6px #E5E7EB,
-            -10px 5px 0 -6px #E5E7EB,
-            -10px -5px 0 -6px #E5E7EB;
+        background: var(--primary);
+        box-shadow:
+            0 -12px 0 -6px var(--primary),
+            10px -5px 0 -6px var(--primary),
+            10px 5px 0 -6px var(--primary),
+            0 12px 0 -6px var(--primary),
+            -10px 5px 0 -6px var(--primary),
+            -10px -5px 0 -6px var(--primary);
     }
     100% {
-        background: #E5E7EB;
+        background: var(--primary);
         box-shadow: 
             0 -24px 0 -8px transparent,
             20px -10px 0 -8px transparent,
