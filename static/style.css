@@ -542,24 +542,26 @@ footer {
 /* Animation Keyframes */
 @keyframes splash-checkbox {
     40% {
+        /* smaller blobs (negative spread), stronger opacity */
         background: var(--primary);
         box-shadow:
-            0 -12px 0 -6px var(--primary),
-            10px -5px 0 -6px var(--primary),
-            10px 5px 0 -6px var(--primary),
-            0 12px 0 -6px var(--primary),
-            -10px 5px 0 -6px var(--primary),
-            -10px -5px 0 -6px var(--primary);
+            0 -18px 0 -10px rgba(0,51,102,0.95),
+            22px -9px 0 -10px rgba(0,51,102,0.95),
+            22px 9px 0 -10px rgba(0,51,102,0.95),
+            0 18px 0 -10px rgba(0,51,102,0.95),
+            -22px 9px 0 -10px rgba(0,51,102,0.95),
+            -22px -9px 0 -10px rgba(0,51,102,0.95);
     }
     100% {
+        /* travel further out but fade to a still-visible opacity */
         background: var(--primary);
-        box-shadow: 
-            0 -24px 0 -8px transparent,
-            20px -10px 0 -8px transparent,
-            20px 10px 0 -8px transparent,
-            0 24px 0 -8px transparent,
-            -20px 10px 0 -8px transparent,
-            -20px -10px 0 -8px transparent;
+        box-shadow:
+            0 -48px 0 -14px rgba(0,51,102,0.45),
+            48px -24px 0 -14px rgba(0,51,102,0.45),
+            48px 24px 0 -14px rgba(0,51,102,0.45),
+            0 48px 0 -14px rgba(0,51,102,0.45),
+            -48px 24px 0 -14px rgba(0,51,102,0.45),
+            -48px -24px 0 -14px rgba(0,51,102,0.45);
     }
 }
 
