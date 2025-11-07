@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- SVG Filter für Gooey-Effekt -->
+    <svg class="gooey-svg">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" />
+            </filter>
+        </defs>
+    </svg>
+
     <header>
         <h1>Fleischkäse</h1>
         <p>Deine Wünsche, unsere Mission - jetzt bestellen!</p>
@@ -99,5 +110,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>

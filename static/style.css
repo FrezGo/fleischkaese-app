@@ -9,6 +9,15 @@
     --shadow: 0 8px 20px rgba(0,51,102,0.06);
     --radius-md: 12px;
     --radius-sm: 8px;
+    
+    /* Pill-spezifische Variablen */
+    --pill-color-blue: var(--primary);
+    --pill-color-light-gray: #d1d5db;
+    --pill-color-white: white;
+    --pill-color-text: var(--text);
+    --pill-color-background: #f8f8f8;
+    --pill-color-checked-bg: var(--secondary);
+    --pill-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
 }
 
 /* Grundlegendes Styling für den gesamten Körper */
@@ -475,60 +484,119 @@ footer {
 
 
 /* ========== CONDIMENT PILLS STYLING ========== */
+/* Die unsichtbare Gooey-SVG */
+.gooey-svg {
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
 .condiments {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     margin-top: 10px;
-    flex-wrap: wrap; /* erlaubt Umbruch bei vielen Pills */
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    position: relative;
+    background-color: var(--pill-color-background);
+    border-radius: var(--radius-md);
 }
 
 .condiment-pill {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 15px;
-    background-color: #f0f0f0;
-    border: 2px solid #ddd;
-    border-radius: 20px;
+    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+    background-color: var(--pill-color-white);
+    border-radius: 9999px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-    flex: 1 1 0; /* gleiche Breite: teilt verfügbaren Platz in der Zeile */
-    min-width: 0; /* wichtig, damit Inhalt nicht die Flex-Kerne sprengt */
-    justify-content: center; /* Inhalt zentrieren */
-    text-align: center;
+    transition: all 0.2s ease-in-out;
+    font-size: 1.125rem;
+    color: var(--pill-color-text);
+    position: relative;
+    z-index: 10;
+    box-shadow: var(--pill-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: flex-start;
     box-sizing: border-box;
 }
 
 .condiment-pill:hover {
-    background-color: #e8f5e9;
-    border-color: var(--secondary);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 .condiment-pill.active {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
+    background-color: var(--pill-color-checked-bg);
     color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.condiment-pill.active:hover {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(-0.5px);
 }
 
 .condiment-text {
     font-size: 0.95em;
     font-weight: 500;
+    white-space: nowrap;
+    padding-left: 0.5rem;
 }
 
+/* Animation Keyframes */
+@keyframes splash-pill {
+    40% {
+        background: var(--pill-color-checked-bg);
+        box-shadow: 
+            0 -16px 0 -8px var(--pill-color-checked-bg),
+            14px -7px 0 -8px var(--pill-color-checked-bg),
+            14px 7px 0 -8px var(--pill-color-checked-bg),
+            0 16px 0 -8px var(--pill-color-checked-bg),
+            -14px 7px 0 -8px var(--pill-color-checked-bg),
+            -14px -7px 0 -8px var(--pill-color-checked-bg);
+    }
+    100% {
+        background: var(--pill-color-checked-bg);
+        box-shadow: 
+            0 -32px 0 -10px transparent,
+            28px -14px 0 -10px transparent,
+            28px 14px 0 -10px transparent,
+            0 32px 0 -10px transparent,
+            -28px 14px 0 -10px transparent,
+            -28px -14px 0 -10px transparent;
+    }
+}
+
+/* Animation Class */
+.splash-animation {
+    animation: splash-pill 0.6s ease-out;
+    filter: url('#goo');
+}
+
+/* Checkbox Styling */
 .condiment-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #999;
-    border-radius: 50%;
-    background-color: white;
-    transition: all 0.3s ease;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
     position: relative;
+    border-radius: 50%;
+    background: none;
+    transition: all 0.3s ease;
+    margin-right: 0.5rem;
+}
+
+.condiment-pill .condiment-checkbox {
+    border: 2px solid var(--pill-color-light-gray);
 }
 
 .condiment-pill.active .condiment-checkbox {
-    background-color: white;
     border-color: white;
+    background-color: white;
 }
 
 .condiment-pill.active .condiment-checkbox::after {
@@ -537,9 +605,10 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--secondary);
+    color: var(--pill-color-checked-bg);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 1;
 }
 
 /* ========== LEADERBOARD FIXES ========== */
@@ -596,11 +665,22 @@ footer {
     
     .condiments {
         gap: 8px;
+        padding: 0.25rem;
     }
     
     .condiment-pill {
-        padding: 6px 12px;
-        font-size: 0.9em;
+        padding: 0.4rem 1.25rem 0.4rem 0.4rem;
+        font-size: 1rem;
+    }
+
+    .condiment-checkbox {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+    }
+
+    .condiment-pill.active .condiment-checkbox::after {
+        font-size: 14px;
     }
 }
 
