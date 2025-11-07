@@ -1,12 +1,12 @@
 /* Farbpalette und Design-Token */
 :root {
-    --primary: #C93737; /* Warmes Rot - CTA */
-    --secondary: #FFC72C; /* Goldgelb - Akzente */
-    --surface: #FAF0E6; /* Cremeweiß - Hauptflächen */
-    --text: #331E1E; /* Dunkles Braun - Text/Footer */
-    --muted: #7a5f5f; /* Gedämpftes Braun */
-    --border: #e6d7c9; /* dezente Ränder */
-    --shadow: 0 8px 20px rgba(51,30,30,0.06);
+    --primary: #003366; /* Marineblau - Header/UI */
+    --secondary: #66BB6A; /* Frisches Grün - Akzente/CTA */
+    --surface: #F5F5F5; /* Dühnes Grau - Hintergrund */
+    --text: #4A4A4A; /* Mittleres Grau - Text */
+    --muted: #8a8a8a; /* Gedämpftes Grau */
+    --border: #e0e0e0; /* Dezente Ränder */
+    --shadow: 0 8px 20px rgba(0,51,102,0.06);
     --radius-md: 12px;
     --radius-sm: 8px;
 }
@@ -26,8 +26,8 @@ body {
 
 /* Header-Bereich */
 header {
-    background: linear-gradient(180deg, var(--primary), #ad2d2d 80%);
-    color: var(--surface);
+    background: linear-gradient(180deg, var(--primary), #002244 80%);
+    color: white;
     padding: 22px 14px;
     text-align: center;
     border-radius: var(--radius-md);
@@ -172,16 +172,16 @@ section h2 {
 }
 
 #selected-items li {
-    background-color: var(--success, #e9ffe9);
+    background-color: #f0f7f0;
     padding: 10px 15px;
     margin-bottom: 8px;
-    border-left: 6px solid var(--primary);
+    border-left: 6px solid var(--secondary);
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 1em;
-    box-shadow: 0 4px 14px rgba(51,30,30,0.04);
+    box-shadow: 0 4px 14px rgba(102,187,106,0.08);
 }
 
 #total-price {
@@ -215,7 +215,7 @@ section h2 {
 
 /* Button */
 button[type="submit"] {
-    background: linear-gradient(180deg, var(--primary), #b02f2f);
+    background: linear-gradient(180deg, var(--secondary), #5CAF60);
     color: white;
     padding: 12px 20px;
     border: none;
@@ -227,7 +227,7 @@ button[type="submit"] {
     transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
     width: 100%;
     box-sizing: border-box;
-    box-shadow: 0 6px 18px rgba(201,55,55,0.12);
+    box-shadow: 0 6px 18px rgba(102,187,106,0.15);
 }
 
 button[type="submit"]:hover {
@@ -419,8 +419,8 @@ footer {
 }
 
 #add-config-btn {
-    background: linear-gradient(180deg, var(--secondary), #e6b524);
-    color: var(--text);
+    background: linear-gradient(180deg, var(--secondary), #5CAF60);
+    color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
@@ -430,7 +430,7 @@ footer {
     transition: transform 0.12s ease, box-shadow 0.12s ease;
     width: 100%;
     box-sizing: border-box;
-    box-shadow: 0 6px 18px rgba(255,199,44,0.08);
+    box-shadow: 0 6px 18px rgba(102,187,106,0.12);
 }
 
 #add-config-btn:hover {
@@ -501,14 +501,14 @@ footer {
 }
 
 .condiment-pill:hover {
-    background-color: #f7f4ee;
+    background-color: #e8f5e9;
     border-color: var(--secondary);
 }
 
 .condiment-pill.active {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: var(--surface);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: white;
 }
 
 .condiment-text {
@@ -554,8 +554,8 @@ footer {
 }
 
 .details-block {
-    background-color: #e9ffe9;
-    border: 1px solid #d0f0d0;
+    background-color: #f0f7f0;
+    border: 1px solid var(--secondary);
     border-radius: 5px;
     padding: 10px;
     display: flex;
@@ -565,7 +565,7 @@ footer {
 }
 
 .details-block .detail-item {
-    background-color: #d0f0d0;
+    background-color: #e8f5e9;
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 0.95em;
