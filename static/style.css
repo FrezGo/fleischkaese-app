@@ -301,8 +301,34 @@ footer {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+}
+
 
 #leaderboard h2 {
     color: #4CAF50;
@@ -423,38 +449,148 @@ footer {
     background-color: #4cae4c;
 }
 
+/* Neue Keyframe-Animationen */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes submitSuccess {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Verbesserungen für die Konfigurations-Karte */
 .fleischkaese-config-container {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 12px; /* Etwas abgerundeter */
+    padding: 20px; /* Mehr Padding */
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     position: relative;
+    animation: fadeIn 0.5s ease-out; /* Animation hinzufügen */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Abstand zwischen den Elementen in der Karte */
 }
 
 .config-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
+
 
 .config-header h4 {
     margin: 0;
     color: #333;
+    font-size: 1.2em;
 }
 
 .remove-config-btn {
     background-color: #d9534f;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
+    border-radius: 50px; /* Rund machen */
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 1.2em;
+    line-height: 30px;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 .remove-config-btn:hover {
     background-color: #c9302c;
+    transform: scale(1.1);
+}
+
+/* Neue Pill-Buttons für Ketchup/Senf */
+.condiments {
+    display: flex;
+    justify-content: space-between; /* Gleichmäßiger Abstand */
+    gap: 10px; /* Abstand zwischen den Pills */
+    margin-top: 10px;
+}
+
+.condiment-pill {
+    flex: 1; /* Beide Pills nehmen gleich viel Platz ein */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-radius: 50px; /* Pillenform */
+    border: 2px solid #eee;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.condiment-pill .condiment-text {
+    font-weight: 600;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.condiment-pill .condiment-checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Aktiv-Zustand der Pill-Buttons */
+.condiment-pill.active {
+    border-color: transparent;
+    color: white;
+}
+
+.condiment-pill.active[data-condiment="Ketchup"] {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+}
+
+.condiment-pill.active[data-condiment="Senf"] {
+    background: linear-gradient(45deg, #feca57, #ffde7a);
+}
+
+.condiment-pill.active .condiment-text {
+    color: white;
+}
+
+.condiment-pill.active .condiment-checkbox {
+    border-color: white;
+    background-color: white;
+}
+
+.condiment-pill.active .condiment-checkbox::after {
+    content: '✔';
+    color: #333;
+    font-size: 14px;
+}
+
+/* Animation für den Absende-Button */
+.order-submitted button[type="submit"] {
+    animation: submitSuccess 0.4s ease-in-out;
 }

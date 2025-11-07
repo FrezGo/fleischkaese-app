@@ -13,10 +13,6 @@
     </header>
 
     <main>
-        <section id="acceptance-days">
-            <h2>Annahmetage</h2>
-            <p id="acceptance-days-list">Wird geladen...</p>
-        </section>
 
         <section id="leaderboard">
             <h2>Fleischkäse-Leaderboard</h2>
@@ -52,8 +48,14 @@
                                 </div>
                             </div>
                             <div class="condiments">
-                                <label><input type="checkbox" name="condiment" value="Ketchup"> Ketchup</label>
-                                <label><input type="checkbox" name="condiment" value="Senf"> Senf</label>
+                                <div class="condiment-pill" data-condiment="Ketchup">
+                                    <span class="condiment-text">Ketchup</span>
+                                    <div class="condiment-checkbox"></div>
+                                </div>
+                                <div class="condiment-pill" data-condiment="Senf">
+                                    <span class="condiment-text">Senf</span>
+                                    <div class="condiment-checkbox"></div>
+                                </div>
                             </div>
                             <div class="sold-out-overlay" style="display: none;">
                                 <span>Ausverkauft</span>

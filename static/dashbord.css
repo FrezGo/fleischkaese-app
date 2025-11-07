@@ -399,15 +399,19 @@ footer {
 .leaderboard-table th, .leaderboard-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
 .leaderboard-table th {
     background-color: #f2f2f2;
 }
 
+.leaderboard-actions {
+    display: flex;
+    gap: 5px;
+}
+
 .leaderboard-actions button {
-    margin-right: 5px;
     padding: 5px 10px;
     border: 1px solid #ddd;
     background-color: #f2f2f2;

@@ -18,14 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const acceptanceDays = await response.json();
-            if (acceptanceDays.length > 0) {
-                acceptanceDaysList.textContent = acceptanceDays.join(', ');
+            if (acceptanceDays.length === 0) {
+                const popup = document.createElement('div');
+                popup.classList.add('popup-overlay');
+                popup.innerHTML = `
+                    <div class="popup-content">
+                        <h2>Heute geschlossen</h2>
+                        <p>Wir haben heute leider geschlossen. Bitte versuchen Sie es an einem anderen Tag erneut.</p>
+                    </div>
+                `;
+                document.body.appendChild(popup);
             } else {
-                acceptanceDaysList.textContent = 'Heute geschlossen';
+                const popup = document.querySelector('.popup-overlay');
+                if (popup) {
+                    popup.remove();
+                }
             }
         } catch (error) {
             console.error('Fehler beim Laden der Annahmetage:', error);
-            acceptanceDaysList.textContent = 'Fehler beim Laden der Annahmetage.';
         }
     }
 
@@ -44,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
-                container.querySelectorAll('input[name="condiment"]:checked').forEach(checkbox => {
-                    condiments.push(checkbox.value);
+                container.querySelectorAll('.condiment-pill.active').forEach(pill => {
+                    condiments.push(pill.dataset.condiment);
                 });
 
                 let condimentsText = condiments.length > 0 ? ` (${condiments.join(', ')})` : '';
@@ -110,8 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
             updateOrderSummary();
         });
 
-        container.querySelectorAll('input[name="condiment"]').forEach(condimentCheckbox => {
-            condimentCheckbox.addEventListener('change', () => {
+        container.querySelectorAll('.condiment-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                pill.classList.toggle('active');
                 updateOrderSummary();
             });
         });
@@ -132,11 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const quantityInput = newConfig.querySelector('.quantity-input');
         const checkbox = newConfig.querySelector('input[type="checkbox"][data-name]');
-        const condimentCheckboxes = newConfig.querySelectorAll('input[name="condiment"]');
+        const condimentPills = newConfig.querySelectorAll('.condiment-pill');
 
         quantityInput.value = '1';
         checkbox.checked = true;
-        condimentCheckboxes.forEach(cb => cb.checked = false);
+        condimentPills.forEach(pill => pill.classList.remove('active'));
 
         attachEventListeners(newConfig);
         configurationsContainer.appendChild(newConfig);
@@ -164,8 +175,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="condiments">
-                    <label><input type="checkbox" name="condiment" value="Ketchup"> Ketchup</label>
-                    <label><input type="checkbox" name="condiment" value="Senf"> Senf</label>
+                    <div class="condiment-pill" data-condiment="Ketchup">
+                        <span class="condiment-text">Ketchup</span>
+                        <div class="condiment-checkbox"></div>
+                    </div>
+                    <div class="condiment-pill" data-condiment="Senf">
+                        <span class="condiment-text">Senf</span>
+                        <div class="condiment-checkbox"></div>
+                    </div>
                 </div>
                 <div class="sold-out-overlay" style="display: none;">
                     <span>Ausverkauft</span>
@@ -244,8 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
-                container.querySelectorAll('input[name="condiment"]:checked').forEach(checkbox => {
-                    condiments.push(checkbox.value);
+                container.querySelectorAll('.condiment-pill.active').forEach(pill => {
+                    condiments.push(pill.dataset.condiment);
                 });
                 let itemName = `Fleischkäse #${index + 1}`;
                 if (condiments.length > 0) {
@@ -268,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
+            orderForm.classList.add('order-submitted');
+
             const response = await fetch('/api/orders', {
                 method: 'POST',
                 headers: {
@@ -292,6 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Fehler beim Senden der Bestellung:', error);
             alert('Es gab einen Fehler beim Senden Ihrer Bestellung: ' + error.message + '. Bitte versuchen Sie es erneut.');
+        } finally {
+            setTimeout(() => {
+                orderForm.classList.remove('order-submitted');
+            }, 500);
         }
     });
 
