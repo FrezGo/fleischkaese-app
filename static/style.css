@@ -1,7 +1,7 @@
 /* Farbpalette und Design-Token */
 :root {
     --primary: #003366; /* Marineblau - Header/UI */
-    --secondary: #66BB6A; /* Frisches Grün - Akzente/CTA */
+    --secondary: #4a729b; /* Frisches Grün - Akzente/CTA */
     --surface: #F5F5F5; /* Dühnes Grau - Hintergrund */
     --text: #4A4A4A; /* Mittleres Grau - Text */
     --muted: #8a8a8a; /* Gedämpftes Grau */
@@ -496,33 +496,30 @@ footer {
 
 .condiments {
     display: flex;
-    gap: 12px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    padding: 0.75rem;
-    position: relative;
-    background-color: var(--pill-color-background);
-    border-radius: var(--radius-md);
+    gap: 10px;
+    margin-top: 12px;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    background-color: var(--surface);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .condiment-pill {
     display: flex;
     align-items: center;
-    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
-    background-color: var(--pill-color-white);
-    border-radius: 9999px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    font-size: 1.125rem;
-    color: var(--pill-color-text);
-    position: relative;
-    z-index: 10;
-    box-shadow: var(--pill-shadow);
-    border: 1px solid rgba(0, 0, 0, 0.03);
     flex: 1 1 0;
     min-width: 0;
-    justify-content: flex-start;
-    box-sizing: border-box;
+    padding: 8px 12px;
+    background-color: var(--pill-color-background);
+    border: 1px solid var(--pill-color-light-gray);
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--pill-color-text);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: var(--pill-shadow);
+    user-select: none;
+    gap: 8px;
 }
 
 .condiment-pill:hover {
@@ -531,14 +528,9 @@ footer {
 }
 
 .condiment-pill.active {
-    background-color: var(--pill-color-checked-bg);
-    color: white;
+    background-color: #E5E7EB;
+    color: var(--text);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-}
-
-.condiment-pill.active:hover {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    transform: translateY(-0.5px);
 }
 
 .condiment-text {
@@ -549,27 +541,39 @@ footer {
 }
 
 /* Animation Keyframes */
-@keyframes splash-pill {
+@keyframes splash-checkbox {
     40% {
-        background: var(--pill-color-checked-bg);
+        background: #E5E7EB;
         box-shadow: 
-            0 -16px 0 -8px var(--pill-color-checked-bg),
-            14px -7px 0 -8px var(--pill-color-checked-bg),
-            14px 7px 0 -8px var(--pill-color-checked-bg),
-            0 16px 0 -8px var(--pill-color-checked-bg),
-            -14px 7px 0 -8px var(--pill-color-checked-bg),
-            -14px -7px 0 -8px var(--pill-color-checked-bg);
+            0 -12px 0 -6px #E5E7EB,
+            10px -5px 0 -6px #E5E7EB,
+            10px 5px 0 -6px #E5E7EB,
+            0 12px 0 -6px #E5E7EB,
+            -10px 5px 0 -6px #E5E7EB,
+            -10px -5px 0 -6px #E5E7EB;
     }
     100% {
-        background: var(--pill-color-checked-bg);
+        background: #E5E7EB;
         box-shadow: 
-            0 -32px 0 -10px transparent,
-            28px -14px 0 -10px transparent,
-            28px 14px 0 -10px transparent,
-            0 32px 0 -10px transparent,
-            -28px 14px 0 -10px transparent,
-            -28px -14px 0 -10px transparent;
+            0 -24px 0 -8px transparent,
+            20px -10px 0 -8px transparent,
+            20px 10px 0 -8px transparent,
+            0 24px 0 -8px transparent,
+            -20px 10px 0 -8px transparent,
+            -20px -10px 0 -8px transparent;
     }
+}
+
+/* Checkbox Styling */
+.condiment-checkbox {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid var(--pill-color-light-gray);
+    border-radius: 50%;
+    position: relative;
+    transition: border-color 0.2s ease;
+    order: -1;
 }
 
 /* Animation Class */
@@ -595,8 +599,8 @@ footer {
 }
 
 .condiment-pill.active .condiment-checkbox {
-    border-color: white;
-    background-color: white;
+    border-color: var(--text);
+    background-color: #E5E7EB;
 }
 
 .condiment-pill.active .condiment-checkbox::after {
@@ -605,7 +609,7 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--pill-color-checked-bg);
+    color: var(--text);
     font-weight: 700;
     font-size: 16px;
     line-height: 1;
