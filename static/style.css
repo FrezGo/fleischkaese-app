@@ -339,14 +339,7 @@ footer {
     padding-bottom: 15px;
 }
 
-#beer-leaderboard-list {
-    list-style: none;
-    padding: 0;
-    display: grid; /* Einspaltiges Grid, damit die Karten die gesamte Breite nutzen */
-    grid-template-columns: 1fr; /* Jede Karte nimmt 100% der verfügbaren Breite ein */
-    gap: 16px; /* Abstand zwischen den Karten */
-    width: 100%;
-}
+
 
 /* Stil für jeden Leaderboard-Eintrag (der Kasten) */
 .leaderboard-entry-card {
@@ -379,35 +372,6 @@ footer {
     color: #4CAF50;
 }
 
-/* Stil für den Block der Bierdetails */
-.beer-details-block {
-    background-color: #e9ffe9; /* Heller Hintergrund für den Details-Block */
-    border: 1px solid #d0f0d0;
-    border-radius: 5px;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap; /* Details können umbrechen */
-    gap: 10px; /* Abstand zwischen einzelnen Bier-Detail-Items */
-    justify-content: center; /* Details zentrieren */
-}
-
-.beer-details-block .beer-detail-item {
-    background-color: #d0f0d0; /* Noch hellerer Hintergrund für einzelne Items */
-    padding: 5px 10px;
-    border-radius: 3px;
-    font-size: 0.95em;
-    white-space: nowrap; /* Verhindert Umbruch innerhalb eines Items */
-}
-
-.beer-details-block .beer-name {
-    font-weight: bold;
-    color: #333;
-}
-
-.beer-details-block .beer-quantity {
-    color: #007bff; /* Eine Akzentfarbe für die Menge */
-    font-weight: bold;
-}
 
 /* Media Query Anpassungen für kleinere Bildschirme */
 @media (max-width: 768px) {
@@ -484,4 +448,146 @@ footer {
 
 .remove-config-btn:hover {
     background-color: #c9302c;
+}
+
+
+/* ========== CONDIMENT PILLS STYLING ========== */
+.condiments {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.condiment-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.condiment-pill:hover {
+    background-color: #e8e8e8;
+    border-color: #4CAF50;
+}
+
+.condiment-pill.active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
+.condiment-text {
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+.condiment-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #999;
+    border-radius: 50%;
+    background-color: white;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.condiment-pill.active .condiment-checkbox {
+    background-color: white;
+    border-color: white;
+}
+
+.condiment-pill.active .condiment-checkbox::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* ========== LEADERBOARD FIXES ========== */
+/* Die ID und Klassennamen korrigieren */
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+}
+
+.details-block {
+    background-color: #e9ffe9;
+    border: 1px solid #d0f0d0;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.details-block .detail-item {
+    background-color: #d0f0d0;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.95em;
+    white-space: nowrap;
+}
+
+.details-block .item-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.details-block .item-quantity {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.leaderboard-entry-card .leaderboard-header .total-items {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* Media Query Anpassungen für kleinere Bildschirme */
+@media (max-width: 768px) {
+    #leaderboard-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .condiments {
+        gap: 8px;
+    }
+    
+    .condiment-pill {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+}
+
+.item-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+    .item-controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
