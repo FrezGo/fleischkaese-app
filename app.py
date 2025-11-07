@@ -269,5 +269,20 @@ def get_total_earnings():
         total_earnings += order.get('total_price', 0)
     return jsonify({"total_earnings": total_earnings}), 200
 
+@app.route('/api/revenue/reset', methods=['POST'])
+def reset_revenue():
+    global orders_db, order_id_counter, fleischkaese_leaderboard
+    try:
+        if os.path.exists(DATA_FILE):
+            os.rename(DATA_FILE, DATA_FILE + '.bak')
+        orders_db = []
+        order_id_counter = 1
+        fleischkaese_leaderboard = {}
+        save_data()
+        return jsonify({"message": "Gesamteinnahmen erfolgreich zurückgesetzt."}), 200
+    except Exception as e:
+        app.logger.error(f"Fehler beim Zurücksetzen der Einnahmen: {e}")
+        return jsonify({"error": "Fehler beim Zurücksetzen der Einnahmen."}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

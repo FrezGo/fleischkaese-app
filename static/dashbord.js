@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const noMenuItemsMessage = document.getElementById('no-menu-items-message');
     const acceptanceDaysForm = document.getElementById('acceptance-days-form');
     const totalEarningsAmount = document.getElementById('total-earnings-amount');
+    const resetRevenueBtn = document.getElementById('reset-revenue-btn');
 
     async function fetchAndRenderTotalEarnings() {
         try {
@@ -20,6 +21,30 @@ document.addEventListener('DOMContentLoaded', () => {
             totalEarningsAmount.textContent = 'Fehler';
         }
     }
+
+    async function handleResetRevenue() {
+        if (confirm('Möchten Sie die gesamten Einnahmen wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+            try {
+                const response = await fetch('/api/revenue/reset', {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                alert('Die Gesamteinnahmen wurden erfolgreich zurückgesetzt.');
+                fetchAndRenderTotalEarnings();
+                fetchAndRenderOrders();
+                fetchAndRenderLeaderboard();
+            } catch (error) {
+                console.error('Fehler beim Zurücksetzen der Einnahmen:', error);
+                alert('Fehler beim Zurücksetzen der Einnahmen.');
+            }
+        }
+    }
+
+    resetRevenueBtn.addEventListener('click', handleResetRevenue);
 
 
     async function fetchAndRenderOrders() {

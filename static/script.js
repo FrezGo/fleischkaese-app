@@ -86,11 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkbox = container.querySelector('input[type="checkbox"][data-name]');
 
         container.addEventListener('click', (event) => {
-            if (event.target.classList.contains('quantity-button')) {
+            const target = event.target;
+
+            if (target.classList.contains('quantity-button')) {
                 let currentQuantity = parseInt(quantityInput.value);
-                if (event.target.classList.contains('plus')) {
+                if (target.classList.contains('plus')) {
                     currentQuantity++;
-                } else if (event.target.classList.contains('minus')) {
+                } else if (target.classList.contains('minus')) {
                     if (currentQuantity > 0) {
                         currentQuantity--;
                     }
@@ -100,13 +102,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateOrderSummary();
             }
 
-            if (event.target.classList.contains('remove-config-btn')) {
+            if (target.classList.contains('remove-config-btn')) {
                 if (configurationsContainer.querySelectorAll('.fleischkaese-config-container').length > 1) {
                     container.remove();
                     updateOrderSummary();
                 } else {
                     alert('Die letzte Konfiguration kann nicht entfernt werden.');
                 }
+            }
+
+            const pill = target.closest('.condiment-pill');
+            if (pill) {
+                pill.classList.toggle('active');
+                updateOrderSummary();
             }
         });
 
@@ -118,13 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
             quantityInput.value = newQuantity;
             checkbox.checked = newQuantity > 0;
             updateOrderSummary();
-        });
-
-        container.querySelectorAll('.condiment-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                pill.classList.toggle('active');
-                updateOrderSummary();
-            });
         });
 
         checkbox.addEventListener('change', () => {

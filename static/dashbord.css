@@ -390,10 +390,39 @@ footer {
     margin-top: 20px;
 }
 
+#reset-revenue-btn {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#reset-revenue-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Anpassungen für Leaderboard-Abstände */
+#leaderboard {
+    padding: 20px;
+}
+
+.orders-container {
+    display: grid; /* Nutze CSS Grid für Layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsives Spaltenlayout */
+    gap: 20px; /* Einheitlicher Abstand */
+}
+
 .leaderboard-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 20px; /* Mehr Abstand oben */
 }
 
 .leaderboard-table th, .leaderboard-table td {
