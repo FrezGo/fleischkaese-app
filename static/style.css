@@ -600,20 +600,34 @@ footer {
 }
 
 .condiment-pill.active .condiment-checkbox {
-    border-color: var(--text);
-    background-color: #E5E7EB;
+    border-color: var(--primary);
+    background-color: var(--primary);
 }
 
 .condiment-pill.active .condiment-checkbox::after {
-    content: '✓';
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--text);
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 1;
+    top: 45%;
+    left: 25%;
+    width: 45%;
+    height: 25%;
+    border: 2px solid white;
+    border-top: 0;
+    border-right: 0;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    animation: checkmark 0.2s ease-out forwards;
+}
+
+@keyframes checkmark {
+    0% {
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.7);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(-45deg) scale(1);
+    }
 }
 
 /* ========== LEADERBOARD FIXES ========== */
