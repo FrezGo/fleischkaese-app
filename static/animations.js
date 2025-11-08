@@ -4,22 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
     pills.forEach(pill => {
         const checkbox = pill.querySelector('.condiment-checkbox');
         
+        // Only play the splash animation when the pill becomes active (selected).
         pill.addEventListener('click', () => {
-            // Remove existing animation classes
-            checkbox.style.animation = '';
-            
-            // Force a reflow to restart the animation
-            void checkbox.offsetWidth;
-            
-            // Add the animation
-            checkbox.style.animation = 'splash-checkbox 0.6s ease-out';
-            checkbox.style.filter = 'url(#goo)';
-            
-            // Remove the animation and filter after it completes
+            // allow other click handlers (which toggle .active) to run first
             setTimeout(() => {
+                const isActive = pill.classList.contains('active');
+                if (!isActive) {
+                    // if now inactive, don't play animation
+                    return;
+                }
+
+                // Restart animation by clearing then forcing reflow
                 checkbox.style.animation = '';
-                checkbox.style.filter = '';
-            }, 600);
+                void checkbox.offsetWidth;
+
+                // Play animation and apply goo filter
+                checkbox.style.animation = 'splash-checkbox 0.6s ease-out';
+                checkbox.style.filter = 'url(#goo)';
+
+                // Clean up after animation completes
+                setTimeout(() => {
+                    checkbox.style.animation = '';
+                    checkbox.style.filter = '';
+                }, 600);
+            }, 0);
         });
     });
 });

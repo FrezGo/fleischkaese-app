@@ -89,17 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = event.target;
 
             if (target.classList.contains('quantity-button')) {
-                let currentQuantity = parseInt(quantityInput.value);
-                if (target.classList.contains('plus')) {
-                    currentQuantity++;
-                } else if (target.classList.contains('minus')) {
-                    if (currentQuantity > 0) {
-                        currentQuantity--;
-                    }
-                }
-                quantityInput.value = currentQuantity;
-                checkbox.checked = currentQuantity > 0;
-                updateOrderSummary();
+                const delta = target.classList.contains('plus') ? 1 : -1;
+                animateQuantityChange(quantityInput, delta, container);
             }
 
             if (target.classList.contains('remove-config-btn')) {
@@ -137,6 +128,80 @@ document.addEventListener('DOMContentLoaded', () => {
             updateOrderSummary();
         });
     }
+
+    /**
+     * Animate and change a numeric input value (bouncy)
+     * @param {HTMLInputElement} input
+     * @param {number} delta
+     * @param {HTMLElement} container - config container to update related checkbox
+     */
+    function animateQuantityChange(input, delta, container) {
+        const oldValue = parseInt(input.value) || 0;
+        const min = parseInt(input.min) || 0;
+        const max = parseInt(input.max) || 99;
+        let newValue = oldValue + delta;
+        if (newValue < min) newValue = min;
+        if (newValue > max) newValue = max;
+        if (newValue === oldValue) return;
+
+        const isIncreasing = delta > 0;
+
+        // quick slide out
+        input.style.transition = 'all 0.1s ease-in';
+        input.style.transform = `translateY(${isIncreasing ? '-10px' : '10px'})`;
+        input.style.opacity = '0';
+
+        setTimeout(() => {
+            input.value = newValue;
+            // bounce back in
+            input.style.transition = 'all 0.3s cubic-bezier(.25,1.5,.5,1)';
+            input.style.transform = 'translateY(0)';
+            input.style.opacity = '1';
+
+            // keep checkbox in sync
+            const checkbox = container.querySelector('input[type="checkbox"][data-name]');
+            if (checkbox) checkbox.checked = parseInt(input.value) > 0;
+
+            updateOrderSummary();
+        }, 100);
+    }
+
+    /* Theme toggle: initialize from localStorage or prefers-color-scheme, allow manual override */
+    (function initThemeToggle() {
+        const themeCheckbox = document.getElementById('theme-toggle-checkbox');
+        if (!themeCheckbox) return;
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeCheckbox.checked = true;
+            } else if (theme === 'light') {
+                document.body.removeAttribute('data-theme');
+                themeCheckbox.checked = false;
+            }
+        }
+
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+            applyTheme(saved);
+        } else {
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(prefersDark ? 'dark' : 'light');
+        }
+
+        themeCheckbox.addEventListener('change', () => {
+            const theme = themeCheckbox.checked ? 'dark' : 'light';
+            applyTheme(theme);
+            localStorage.setItem('theme', theme);
+        });
+
+        // react to OS-level changes only if user hasn't explicitly chosen
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    })();
 
     function addNewConfiguration() {
         const firstConfig = configurationsContainer.querySelector('.fleischkaese-config-container');

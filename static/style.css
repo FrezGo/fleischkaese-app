@@ -1,7 +1,8 @@
 /* Farbpalette und Design-Token */
 :root {
+    /* Light Mode Colors */
     --primary: #003366; /* Marineblau - Header/UI */
-    --secondary: #66BB6A; /* Frisches Grün - Akzente/CTA */
+    --secondary: #28629b; /* Frisches Grün - Akzente/CTA */
     --surface: #F5F5F5; /* Dühnes Grau - Hintergrund */
     --text: #4A4A4A; /* Mittleres Grau - Text */
     --muted: #8a8a8a; /* Gedämpftes Grau */
@@ -9,6 +10,20 @@
     --shadow: 0 8px 20px rgba(0,51,102,0.06);
     --radius-md: 15px;
     --radius-sm: 10px;
+    
+    /* Dark Mode Colors */
+    --dark-bg: #1f2937;
+    --dark-surface: #374151;
+    --dark-text: #ffffff;
+    --dark-muted: #9ca3af;
+    --dark-border: #4b5563;
+    --dark-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    
+    /* Quantity Selector Colors */
+    --orb-bg: var(--surface);
+    --orb-button-bg: #fff;
+    --orb-text: var(--text);
+    --orb-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
     
     /* Pill-spezifische Variablen */
     --pill-color-blue: var(--primary);
@@ -47,7 +62,16 @@ header {
 header h1 {
     margin: 0;
     font-size: 2em;
-    letter-spacing: -0.5px;
+    :root {
+        --surface: var(--dark-bg);
+        --text: var(--dark-text);
+        --muted: var(--dark-muted);
+        --border: var(--dark-border);
+        --shadow: var(--dark-shadow);
+        --orb-bg: var(--dark-surface);
+        --orb-button-bg: var(--dark-bg);
+        --orb-text: var(--dark-text);
+    }
 }
 
 header p {
@@ -78,6 +102,78 @@ section h2 {
     color: var(--text);
     border-bottom: 2px solid #f2e9e1;
     padding-bottom: 8px;
+
+/* Manual theme toggle support: body[data-theme="dark"] will behave like prefers-color-scheme: dark */
+body[data-theme="dark"] {
+    --surface: var(--dark-surface);
+    --text: var(--dark-text);
+    --muted: var(--dark-muted);
+    --border: var(--dark-border);
+    --shadow: var(--dark-shadow);
+    --orb-bg: var(--dark-surface);
+    --orb-button-bg: var(--dark-bg);
+    --orb-text: var(--dark-text);
+    background-color: var(--dark-bg);
+}
+
+/* Footer theme toggle styles */
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 980px;
+    margin: 0 auto;
+}
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.theme-label {
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.2s;
+    border-radius: 999px;
+}
+.theme-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    top: 3px;
+    background-color: white;
+    transition: 0.2s;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.theme-switch input:checked + .theme-slider {
+    background-color: var(--primary);
+}
+.theme-switch input:checked + .theme-slider:before {
+    transform: translateX(20px);
+}
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 1.4em;
@@ -117,25 +213,75 @@ section h2 {
     transform: scale(1.2);
 }
 
-/* ************ Start Anpassung Mengeneingabe ************ */
+/* Quantity Selector Styles */
 .quantity-input-container {
+    width: 100%;
+    max-width: 160px;
+    margin: 0 auto;
+}
+
+.selector-orb {
     display: flex;
     align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden; /* Versteckt überstehende Inhalte */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Leichter Schatten */
+    justify-content: space-between;
+    background-color: var(--orb-bg);
+    border-radius: 9999px;
+    padding: 4px;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.quantity-button {
+    width: 42px;
+    height: 42px;
+    background-color: var(--orb-button-bg);
+    color: var(--primary);
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    box-shadow: var(--orb-shadow);
+    transition: all 0.1s ease;
+    outline: none;
+}
+
+.quantity-button:active {
+    transform: scale(0.9);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.quantity-wrapper {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    overflow: hidden;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
 }
 
 .quantity-input {
-    width: 40px; /* Schmaler für Handys */
-    padding: 8px 5px;
-    border: none; /* Entfernt den Standard-Border */
+    min-width: 2rem;
+    display: inline-block;
+    transition: all 0.3s ease-out;
+    will-change: transform, opacity;
+    color: var(--orb-text);
+    border: none;
+    background: none;
     text-align: center;
-    font-size: 1em;
-    appearance: textfield;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 0;
+    margin: 0;
+    width: 3ch;
+        appearance: textfield;
     -moz-appearance: textfield;
-    outline: none; /* Entfernt den Fokus-Outline */
 }
 
 .quantity-input::-webkit-outer-spin-button,
@@ -144,31 +290,47 @@ section h2 {
     margin: 0;
 }
 
-.quantity-button {
-    background-color: #f0f0f0; /* Heller Hintergrund für Buttons */
-    border: none;
-    padding: 8px 12px;
-    font-size: 1.2em;
-    cursor: pointer;
-    outline: none;
-    transition: background-color 0.2s ease;
-    user-select: none; /* Verhindert Textauswahl beim Klicken */
-}
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface: var(--dark-bg);
+        --text: var(--dark-text);
+        --muted: var(--dark-muted);
+        --border: var(--dark-border);
+        --shadow: var(--dark-shadow);
+        --orb-bg: var(--dark-surface);
+        --orb-button-bg: var(--dark-bg);
+        --orb-text: var(--dark-text);
+    }
 
-.quantity-button:hover {
-    background-color: #e0e0e0;
-}
+    body {
+        background-color: var(--dark-bg);
+        color: var(--dark-text);
+    }
 
-.quantity-button:active {
-    background-color: #d0d0d0; /* Dunkler beim Klicken */
-}
+    main {
+        background-color: var(--dark-surface);
+    }
 
-.quantity-button.minus {
-    border-right: 1px solid #ddd; /* Trennlinie */
-}
+    section {
+        background-color: var(--dark-bg);
+        border-color: var(--dark-border);
+    }
 
-.quantity-button.plus {
-    border-left: 1px solid #ddd; /* Trennlinie */
+    .quantity-button {
+        color: var(--dark-text);
+    }
+
+    #selected-items li {
+        background-color: rgba(40, 98, 155, 0.2);
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        background-color: var(--dark-bg);
+        color: var(--dark-text);
+        border-color: var(--dark-border);
+    }
 }
 /* ************ Ende Anpassung Mengeneingabe ************ */
 
@@ -224,24 +386,67 @@ section h2 {
 
 /* Button */
 button[type="submit"] {
-    background: linear-gradient(180deg, var(--secondary), #5CAF60);
+    font-family: inherit;
+    font-size: 20px;
+    background: var(--primary);
     color: white;
-    padding: 12px 20px;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
     border: none;
-    border-radius: 999px; /* pill-shaped button */
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: all 0.2s;
     cursor: pointer;
-    font-size: 1.05em;
-    font-weight: 600;
     margin-top: 15px;
-    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
     width: 100%;
-    box-sizing: border-box;
-    box-shadow: 0 6px 18px rgba(102,187,106,0.15);
+    justify-content: center;
+    box-shadow: var(--shadow);
 }
 
-button[type="submit"]:hover {
-    transform: translateY(-2px);
-    opacity: 0.98;
+button[type="submit"] span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+button[type="submit"] svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button[type="submit"]:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+button[type="submit"]:hover span {
+    transform: translateX(5em);
+}
+
+button[type="submit"]:active {
+    transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+    from {
+        transform: translateY(0.1em);
+    }
+    to {
+        transform: translateY(-0.1em);
+    }
+}
+
+@media (min-width: 768px) {
+    button[type="submit"] {
+        width: auto;
+        min-width: 200px;
+    }
 }
 
 /* Footer */
@@ -428,11 +633,11 @@ footer {
 }
 
 #add-config-btn {
-    background: linear-gradient(180deg, var(--secondary), #5CAF60);
+    background: linear-gradient(180deg, var(--secondary), var(--primary));
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 99999px;
     cursor: pointer;
     font-size: 1.05em;
     margin-top: 15px;
@@ -515,7 +720,7 @@ footer {
     border-radius: 999px;
     cursor: pointer;
     color: var(--pill-color-text);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.18s ease, color 0.18s ease;
     box-shadow: var(--pill-shadow);
     user-select: none;
     gap: 8px;
@@ -527,8 +732,8 @@ footer {
 }
 
 .condiment-pill.active {
-    background-color: #E5E7EB;
-    color: var(--text);
+    background-color: var(--pill-color-checked-bg);
+    color: var(--surface);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -604,29 +809,41 @@ footer {
     background-color: var(--primary);
 }
 
+/* smoother transitions for checkbox and background so deselect fades */
+.condiment-pill .condiment-checkbox {
+    transition: background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.18s ease;
+}
+
 .condiment-pill.active .condiment-checkbox::after {
     content: '';
     position: absolute;
-    top: 45%;
-    left: 25%;
-    width: 45%;
-    height: 25%;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 6px;
     border: 2px solid white;
     border-top: 0;
     border-right: 0;
-    transform: rotate(-45deg);
+    transform: translate(-50%, -55%) rotate(-45deg);
     transform-origin: center;
-    animation: checkmark 0.2s ease-out forwards;
+    opacity: 1;
+    /* animate scale/opacity for a nicer entrance */
+    animation: checkmark 0.18s cubic-bezier(.25,.9,.3,1) forwards;
+}
+
+/* ensure pseudo-element is invisible by default to avoid layout shift */
+.condiment-pill .condiment-checkbox::after {
+    opacity: 0;
 }
 
 @keyframes checkmark {
     0% {
         opacity: 0;
-        transform: rotate(-45deg) scale(0.7);
+        transform: translate(-50%, -55%) rotate(-45deg) scale(0.7);
     }
     100% {
         opacity: 1;
-        transform: rotate(-45deg) scale(1);
+        transform: translate(-50%, -55%) rotate(-45deg) scale(1);
     }
 }
 

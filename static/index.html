@@ -99,14 +99,33 @@
                     <label for="tip">Trinkgeld (€):</label>
                     <input type="number" id="tip" min="0" step="0.10" value="0">
                 </div>
-                <button type="submit">Bestellung abschicken</button>
+                <button type="submit">
+                    <div class="svg-wrapper-1">
+                        <div class="svg-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Bestellung abschicken</span>
+                </button>
             </form>
         </section>
 
     </main>
 
     <footer>
-        <p>&copy; 2025 Mein Restaurant</p>
+        <div class="footer-inner">
+            <p>&copy; 2025 Mein Restaurant</p>
+            <div class="theme-toggle" aria-hidden="false">
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle-checkbox" aria-label="Dunkelmodus umschalten">
+                    <span class="theme-slider"></span>
+                </label>
+                <span class="theme-label">Dunkelmodus</span>
+            </div>
+        </div>
     </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
