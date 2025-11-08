@@ -33,7 +33,21 @@
     --pill-color-background: #f8f8f8;
     --pill-color-checked-bg: var(--secondary);
     --pill-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    /* Card and surface variants to support dark mode */
+    --card: #ffffff;
+    --card-alt: #f9f9f9;
+    --muted-surface: #f0f7f0;
+    --detail-bg: #e8f5e9;
+    /* dark-mode primary/secondary suggestions (used when body[data-theme="dark"]) */
+    --dark-primary: #4DA8FF; /* bright blue for dark UI accents */
+    --dark-secondary: #34D399; /* teal/green accent */
 }
+
+/* smooth transitions for color/background/border across the UI */
+*, *::before, *::after {
+    transition: background-color 260ms ease, color 260ms ease, border-color 240ms ease, box-shadow 220ms ease;
+}
+
 
 /* Grundlegendes Styling für den gesamten Körper */
 body {
@@ -62,16 +76,6 @@ header {
 header h1 {
     margin: 0;
     font-size: 2em;
-    :root {
-        --surface: var(--dark-bg);
-        --text: var(--dark-text);
-        --muted: var(--dark-muted);
-        --border: var(--dark-border);
-        --shadow: var(--dark-shadow);
-        --orb-bg: var(--dark-surface);
-        --orb-button-bg: var(--dark-bg);
-        --orb-text: var(--dark-text);
-    }
 }
 
 header p {
@@ -95,26 +99,16 @@ section {
     padding: 16px;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    background-color: #fff;
+    background-color: var(--card);
 }
 
 section h2 {
     color: var(--text);
     border-bottom: 2px solid #f2e9e1;
     padding-bottom: 8px;
-
-/* Manual theme toggle support: body[data-theme="dark"] will behave like prefers-color-scheme: dark */
-body[data-theme="dark"] {
-    --surface: var(--dark-surface);
-    --text: var(--dark-text);
-    --muted: var(--dark-muted);
-    --border: var(--dark-border);
-    --shadow: var(--dark-shadow);
-    --orb-bg: var(--dark-surface);
-    --orb-button-bg: var(--dark-bg);
-    --orb-text: var(--dark-text);
-    background-color: var(--dark-bg);
 }
+
+/* footer toggle styles follow */
 
 /* Footer theme toggle styles */
 .footer-inner {
@@ -174,10 +168,7 @@ body[data-theme="dark"] {
 .theme-switch input:checked + .theme-slider:before {
     transform: translateX(20px);
 }
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.4em;
-}
+
 
 /* Menü-Kategorien */
 .menu-category h3 {
@@ -216,8 +207,15 @@ body[data-theme="dark"] {
 /* Quantity Selector Styles */
 .quantity-input-container {
     width: 100%;
-    max-width: 160px;
+    max-width: 240px;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--orb-bg);
+    border-radius: 9999px;
+    padding: 4px;
+    box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06);
 }
 
 .selector-orb {
@@ -301,6 +299,11 @@ body[data-theme="dark"] {
         --orb-bg: var(--dark-surface);
         --orb-button-bg: var(--dark-bg);
         --orb-text: var(--dark-text);
+        /* dark card overrides */
+        --card: var(--dark-surface);
+        --card-alt: var(--dark-bg);
+        --muted-surface: rgba(40,98,155,0.06);
+        --detail-bg: rgba(40,98,155,0.04);
     }
 
     body {
@@ -332,6 +335,28 @@ body[data-theme="dark"] {
         border-color: var(--dark-border);
     }
 }
+
+/* Manual theme toggle support: body[data-theme="dark"] will override to dark variables
+   Placed after prefers-color-scheme so manual toggle takes precedence. */
+body[data-theme="dark"] {
+    --surface: var(--dark-bg);
+    --text: var(--dark-text);
+    --muted: var(--dark-muted);
+    --border: var(--dark-border);
+    --shadow: var(--dark-shadow);
+    --orb-bg: var(--dark-surface);
+    --orb-button-bg: var(--dark-bg);
+    --orb-text: var(--dark-text);
+    --card: var(--dark-surface);
+    --card-alt: var(--dark-bg);
+    --muted-surface: rgba(40,98,155,0.06);
+    --detail-bg: rgba(40,98,155,0.04);
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    /* Map primary/secondary to dark variants so var(--primary) updates site-wide */
+    --primary: var(--dark-primary);
+    --secondary: var(--dark-secondary);
+}
 /* ************ Ende Anpassung Mengeneingabe ************ */
 
 
@@ -343,7 +368,7 @@ body[data-theme="dark"] {
 }
 
 #selected-items li {
-    background-color: #f0f7f0;
+    background-color: var(--muted-surface);
     padding: 10px 15px;
     margin-bottom: 8px;
     border-left: 6px solid var(--secondary);
@@ -535,7 +560,7 @@ footer {
 #leaderboard {
     margin-top: 30px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--card-alt);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -554,7 +579,7 @@ footer {
 }
 
 .popup-content {
-    background-color: white;
+    background-color: var(--card);
     padding: 40px;
     border-radius: 10px;
     text-align: center;
@@ -579,8 +604,8 @@ footer {
 
 /* Stil für jeden Leaderboard-Eintrag (der Kasten) */
 .leaderboard-entry-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
+    background-color: var(--card);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
@@ -652,8 +677,8 @@ footer {
 }
 
 .fleischkaese-config-container {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--card);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 15px;
@@ -859,7 +884,7 @@ footer {
 }
 
 .details-block {
-    background-color: #f0f7f0;
+    background-color: var(--muted-surface);
     border: 1px solid var(--secondary);
     border-radius: 5px;
     padding: 10px;
@@ -870,7 +895,7 @@ footer {
 }
 
 .details-block .detail-item {
-    background-color: #e8f5e9;
+    background-color: var(--detail-bg);
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 0.95em;
