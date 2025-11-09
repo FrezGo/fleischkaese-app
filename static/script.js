@@ -168,19 +168,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* Theme toggle: initialize from localStorage or prefers-color-scheme, allow manual override */
     (function initThemeToggle() {
-        const themeCheckbox = document.getElementById('theme-toggle-checkbox');
+        const themeCheckbox = document.getElementById('check-5');
         if (!themeCheckbox) return;
 
         function applyTheme(theme) {
             if (theme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
                 themeCheckbox.checked = true;
-            } else if (theme === 'light') {
+            } else {
                 document.body.removeAttribute('data-theme');
                 themeCheckbox.checked = false;
             }
         }
 
+        // Initialize theme
         const saved = localStorage.getItem('theme');
         if (saved) {
             applyTheme(saved);
@@ -189,14 +190,15 @@ document.addEventListener('DOMContentLoaded', () => {
             applyTheme(prefersDark ? 'dark' : 'light');
         }
 
+        // Handle toggle changes
         themeCheckbox.addEventListener('change', () => {
             const theme = themeCheckbox.checked ? 'dark' : 'light';
             applyTheme(theme);
             localStorage.setItem('theme', theme);
         });
 
-        // react to OS-level changes only if user hasn't explicitly chosen
-        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        // Handle system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             if (!localStorage.getItem('theme')) {
                 applyTheme(e.matches ? 'dark' : 'light');
             }

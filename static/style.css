@@ -547,10 +547,19 @@ button[type="submit"]:active {
 /* Footer */
 footer {
     text-align: center;
-    padding: 15px; /* Weniger Padding */
-    margin-top: 20px; /* Weniger Abstand */
-    color: #777;
+    padding: 15px;
+    margin-top: 20px;
+    color: var(--text);
     font-size: 0.8em;
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 980px;
+    margin: 0 auto;
 }
 
 /* Media Query für Bildschirme größer als Handys (Desktop/Tablet) */
