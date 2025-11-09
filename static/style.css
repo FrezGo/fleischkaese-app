@@ -36,8 +36,8 @@
     --dark-muted: #9ca3af;
     --dark-border: #4b5563;
     --dark-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    --dark-primary: #4DA8FF; /* bright blue for dark UI accents */
-    --dark-secondary: #34D399; /* teal/green accent */
+    --dark-primary: #4366af; /* bright blue for dark UI accents */
+    --dark-secondary: #3ba9bd; /* teal/green accent */
     /* Pill-spezifische Variablen (Dark, will be overridden in body[data-theme=dark]) */
     --dark-pill-color-background: #2d3748;
     --dark-pill-color-light-gray: #4b5563;
@@ -106,75 +106,72 @@ section {
 
 section h2 {
     color: var(--text);
-    border-bottom: 2px solid #f2e9e1;
+    border-bottom: 2px solid var(--border);
     padding-bottom: 8px;
 }
 
-/* footer toggle styles follow */
-
-/* Footer theme toggle styles */
-.footer-inner {
+/* Theme toggle styles */
+.checkbox-wrapper-5 {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    max-width: 980px;
-    margin: 0 auto;
+    justify-content: center;
+    margin: 0;
 }
+
+.checkbox-wrapper-5 .check {
+    --size: 40px;
+    position: relative;
+    display: inline-block;
+    width: var(--size);
+    height: calc(var(--size) / 2);
+    border-radius: calc(var(--size) / 4);
+    background: var(--text);
+    transition: 400ms;
+    cursor: pointer;
+}
+
+.checkbox-wrapper-5 .check input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-wrapper-5 .check span {
+    position: absolute;
+    top: calc(var(--size) / 8);
+    left: calc(var(--size) / 8);
+    width: calc(var(--size) / 4);
+    height: calc(var(--size) / 4);
+    background: var(--surface);
+    border-radius: 50%;
+    transition: 400ms;
+}
+
+.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label {
+    background: var(--primary);
+}
+
+.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label span {
+    background: var(--card);
+    transform: translateX(calc(var(--size) / 2));
+}
+
+/* Theme toggle container */
 .theme-toggle {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-left: auto;
 }
+
 .theme-label {
     font-size: 0.95rem;
-    color: var(--muted);
-}
-.theme-switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-}
-.theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.theme-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.2s;
-    border-radius: 999px;
-}
-.theme-slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    top: 3px;
-    background-color: white;
-    transition: 0.2s;
-    border-radius: 50%;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-}
-.theme-switch input:checked + .theme-slider {
-    background-color: var(--primary);
-}
-.theme-switch input:checked + .theme-slider:before {
-    transform: translateX(20px);
+    color: var(--text);
 }
 
 
 /* Menü-Kategorien */
 .menu-category h3 {
-    color: #555;
+    color: var(--text);
     margin-top: 20px;
     margin-bottom: 10px;
     font-size: 1.4em; /* Etwas kleiner */
@@ -341,28 +338,35 @@ section h2 {
 /* Manual theme toggle support: body[data-theme="dark"] will override to dark variables
    Placed after prefers-color-scheme so manual toggle takes precedence. */
 body[data-theme="dark"] {
+    /* Override all base colors */
     --surface: var(--dark-bg);
     --text: var(--dark-text);
     --muted: var(--dark-muted);
     --border: var(--dark-border);
     --shadow: var(--dark-shadow);
+    
+    /* Override component colors */
     --orb-bg: var(--dark-surface);
     --orb-button-bg: var(--dark-bg);
     --orb-text: var(--dark-text);
     --card: var(--dark-surface);
     --card-alt: var(--dark-bg);
-    --muted-surface: rgba(40,98,155,0.06);
-    --detail-bg: rgba(40,98,155,0.04);
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
-    /* Map primary/secondary to dark variants so var(--primary) updates site-wide */
+    --muted-surface: rgba(40,98,155,0.1);
+    --detail-bg: rgba(40,98,155,0.08);
+    
+    /* Map accent colors to dark variants */
     --primary: var(--dark-primary);
     --secondary: var(--dark-secondary);
-    /* Pillenfarben im Darkmode */
+    
+    /* Override pill colors */
     --pill-color-background: var(--dark-pill-color-background);
     --pill-color-light-gray: var(--dark-pill-color-light-gray);
     --pill-color-text: var(--dark-pill-color-text);
     --pill-color-checked-bg: var(--dark-pill-color-checked-bg);
+    
+    /* Set dark background and text */
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
 }
 /* ************ Ende Anpassung Mengeneingabe ************ */
 
@@ -631,7 +635,7 @@ footer {
 
 .leaderboard-entry-card .leaderboard-header strong {
     font-size: 1.3em;
-    color: #333;
+    color: var(--text);
 }
 
 .leaderboard-entry-card .leaderboard-header .total-beers {
@@ -702,7 +706,7 @@ footer {
 
 .config-header h4 {
     margin: 0;
-    color: #333;
+    color: var(--text);
 }
 
 .remove-config-btn {
