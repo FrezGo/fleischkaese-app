@@ -88,7 +88,7 @@ header p {
 main {
     max-width: 980px;
     margin: 0 auto;
-    background-color: var(--surface);
+    background-color: var(--card);
     padding: 22px;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow);
@@ -533,6 +533,7 @@ button[type="submit"] span {
 button[type="submit"] svg {
     display: block;
     transform-origin: center center;
+    transform: translateX(20px);
     transition: transform 0.3s ease-in-out;
 }
 
@@ -997,7 +998,7 @@ footer {
 
 .details-block .item-name {
     font-weight: bold;
-    color: #333;
+    color: var(--text);
 }
 
 .details-block .item-quantity {
