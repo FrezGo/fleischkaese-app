@@ -1,6 +1,7 @@
 /* Farbpalette und Design-Token */
 :root {
     /* Light Mode Colors */
+    /* Light Mode Colors */
     --primary: #003366; /* Marineblau - Header/UI */
     --secondary: #28629b; /* Frisches Grün - Akzente/CTA */
     --surface: #F5F5F5; /* Dühnes Grau - Hintergrund */
@@ -10,22 +11,12 @@
     --shadow: 0 8px 20px rgba(0,51,102,0.06);
     --radius-md: 15px;
     --radius-sm: 10px;
-    
-    /* Dark Mode Colors */
-    --dark-bg: #1f2937;
-    --dark-surface: #374151;
-    --dark-text: #ffffff;
-    --dark-muted: #9ca3af;
-    --dark-border: #4b5563;
-    --dark-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    
     /* Quantity Selector Colors */
     --orb-bg: var(--surface);
     --orb-button-bg: #fff;
     --orb-text: var(--text);
     --orb-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-    
-    /* Pill-spezifische Variablen */
+    /* Pill-spezifische Variablen (Light) */
     --pill-color-blue: var(--primary);
     --pill-color-light-gray: #d1d5db;
     --pill-color-white: white;
@@ -38,9 +29,20 @@
     --card-alt: #f9f9f9;
     --muted-surface: #f0f7f0;
     --detail-bg: #e8f5e9;
-    /* dark-mode primary/secondary suggestions (used when body[data-theme="dark"]) */
+    /* Dark Mode Colors (used in override) */
+    --dark-bg: #1f2937;
+    --dark-surface: #374151;
+    --dark-text: #ffffff;
+    --dark-muted: #9ca3af;
+    --dark-border: #4b5563;
+    --dark-shadow: 0 8px 20px rgba(0,0,0,0.2);
     --dark-primary: #4DA8FF; /* bright blue for dark UI accents */
     --dark-secondary: #34D399; /* teal/green accent */
+    /* Pill-spezifische Variablen (Dark, will be overridden in body[data-theme=dark]) */
+    --dark-pill-color-background: #2d3748;
+    --dark-pill-color-light-gray: #4b5563;
+    --dark-pill-color-text: #e5e7eb;
+    --dark-pill-color-checked-bg: var(--dark-secondary);
 }
 
 /* smooth transitions for color/background/border across the UI */
@@ -54,7 +56,7 @@ body {
     font-family: 'Inter', 'Arial', sans-serif;
     margin: 0;
     padding: 12px; /* leichtes Padding */
-    background-color: #f4f4f4;
+    background-color: var(--surface);
     color: var(--text);
     line-height: 1.6;
     -webkit-text-size-adjust: 100%; /* Verhindert ungewolltes Zoomen von Text auf iOS */
@@ -356,6 +358,11 @@ body[data-theme="dark"] {
     /* Map primary/secondary to dark variants so var(--primary) updates site-wide */
     --primary: var(--dark-primary);
     --secondary: var(--dark-secondary);
+    /* Pillenfarben im Darkmode */
+    --pill-color-background: var(--dark-pill-color-background);
+    --pill-color-light-gray: var(--dark-pill-color-light-gray);
+    --pill-color-text: var(--dark-pill-color-text);
+    --pill-color-checked-bg: var(--dark-pill-color-checked-bg);
 }
 /* ************ Ende Anpassung Mengeneingabe ************ */
 
