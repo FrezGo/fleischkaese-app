@@ -105,6 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const pill = target.closest('.condiment-pill');
             if (pill) {
                 pill.classList.toggle('active');
+                const checkbox = pill.querySelector('.condiment-checkbox');
+                if (pill.classList.contains('active')) {
+                    checkbox.classList.add('splash-animation');
+                    checkbox.addEventListener('animationend', () => {
+                        checkbox.classList.remove('splash-animation');
+                    }, { once: true });
+                }
                 updateOrderSummary();
             }
         });
@@ -176,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.setAttribute('data-theme', 'dark');
                 themeCheckbox.checked = true;
             } else {
-                document.body.removeAttribute('data-theme');
+                document.body.setAttribute('data-theme', 'light');
                 themeCheckbox.checked = false;
             }
         }

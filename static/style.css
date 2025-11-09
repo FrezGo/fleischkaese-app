@@ -393,6 +393,31 @@ section h2 {
     }
 }
 
+body[data-theme="light"] {
+    --primary: #003366;
+    --secondary: #28629b;
+    --surface: #F5F5F5;
+    --text: #4A4A4A;
+    --muted: #8a8a8a;
+    --border: #e0e0e0;
+    --shadow: 0 8px 20px rgba(0,51,102,0.06);
+    --orb-bg: var(--surface);
+    --orb-button-bg: #fff;
+    --orb-text: var(--text);
+    --pill-color-blue: var(--primary);
+    --pill-color-light-gray: #d1d5db;
+    --pill-color-white: white;
+    --pill-color-text: var(--text);
+    --pill-color-background: #f8f8f8;
+    --pill-color-checked-bg: var(--secondary);
+    --card: #ffffff;
+    --card-alt: #f9f9f9;
+    --muted-surface: #f0f7f0;
+    --detail-bg: #e8f5e9;
+    background-color: var(--surface);
+    color: var(--text);
+}
+
 /* Manual theme toggle support: body[data-theme="dark"] will override to dark variables
    Placed after prefers-color-scheme so manual toggle takes precedence. */
 body[data-theme="dark"] {
@@ -848,6 +873,12 @@ footer {
     padding-left: 0.5rem;
 }
 
+/* Animation Class */
+.splash-animation {
+    animation: splash-checkbox 0.6s ease-out;
+    filter: url('#goo');
+}
+
 /* Animation Keyframes */
 @keyframes splash-checkbox {
     40% {
@@ -876,31 +907,14 @@ footer {
 
 /* Checkbox Styling */
 .condiment-checkbox {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    border: 2px solid var(--pill-color-light-gray);
-    border-radius: 50%;
-    position: relative;
-    transition: border-color 0.2s ease;
-    order: -1;
-}
-
-/* Animation Class */
-.splash-animation {
-    animation: splash-pill 0.6s ease-out;
-    filter: url('#goo');
-}
-
-/* Checkbox Styling */
-.condiment-checkbox {
     width: 32px;
     height: 32px;
     min-width: 32px;
-    position: relative;
+    border: 2px solid var(--pill-color-light-gray);
     border-radius: 50%;
-    background: none;
-    transition: all 0.3s ease;
+    position: relative;
+    transition: border-color 0.2s ease, background-color 0.22s ease, box-shadow 0.18s ease;
+    order: -1;
     margin-right: 0.5rem;
 }
 
