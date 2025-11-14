@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
+            const totalFleischkaese = Object.values(stats).reduce((sum, count) => sum + count, 0);
+            const summaryElement = document.getElementById('order-stats-summary');
+            summaryElement.innerHTML = `Es stehen insgesamt: <strong>${totalFleischkaese}</strong> Fleischkäse aus.`;
+
             renderOrderStatsChart(stats);
 
         } catch (error) {
