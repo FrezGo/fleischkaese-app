@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const acceptanceDaysForm = document.getElementById('acceptance-days-form');
     const totalEarningsAmount = document.getElementById('total-earnings-amount');
     const resetRevenueBtn = document.getElementById('reset-revenue-btn');
+    const orderStatsContainer = document.getElementById('order-stats-container');
 
     async function fetchAndRenderTotalEarnings() {
         try {
@@ -19,6 +20,75 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Fehler beim Laden der Gesamteinnahmen:', error);
             totalEarningsAmount.textContent = 'Fehler';
+        }
+    }
+    
+    async function fetchAndRenderOrderStats() {
+        try {
+            const response = await fetch('/api/orders');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const orders = await response.json();
+            const openOrders = orders.filter(order => order.status !== 'abgeschlossen');
+
+            const stats = {
+                'Ketchup & Senf': 0,
+                'Ketchup': 0,
+                'Senf': 0,
+                'ohne': 0
+            };
+
+            openOrders.forEach(order => {
+                Object.keys(order.items).forEach(item => {
+                    if (item.includes('Fleischkäse')) {
+                        const quantity = order.items[item];
+                        if (item.includes('Ketchup & Senf')) {
+                            stats['Ketchup & Senf'] += quantity;
+                        } else if (item.includes('Ketchup')) {
+                            stats['Ketchup'] += quantity;
+                        } else if (item.includes('Senf')) {
+                            stats['Senf'] += quantity;
+                        } else {
+                            stats['ohne'] += quantity;
+                        }
+                    }
+                });
+            });
+
+            renderOrderStatsChart(stats);
+
+        } catch (error) {
+            console.error('Fehler beim Laden der Bestellstatistiken:', error);
+        }
+    }
+
+    function renderOrderStatsChart(stats) {
+        orderStatsContainer.innerHTML = '';
+        const maxStat = Math.max(...Object.values(stats));
+        const totalHeight = 250; // Maximale Höhe des Balkens in px
+
+        const categories = {
+            'Ketchup & Senf': 'bar-ketchup-senf',
+            'Ketchup': 'bar-ketchup',
+            'Senf': 'bar-senf',
+            'ohne': 'bar-ohne'
+        };
+
+        for (const [category, count] of Object.entries(stats)) {
+            const barHeight = maxStat > 0 ? (count / maxStat) * totalHeight : 0;
+
+            const chartBar = document.createElement('div');
+            chartBar.classList.add('chart-bar');
+
+            chartBar.innerHTML = `
+                <div class="bar ${categories[category]}" style="height: ${barHeight}px;">
+                    <div class="bar-value">${count}</div>
+                </div>
+                <div class="bar-label">${category}</div>
+            `;
+
+            orderStatsContainer.appendChild(chartBar);
         }
     }
 
@@ -413,11 +483,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(fetchAndRenderMenuItemsStatus, 10000);
     setInterval(fetchAndRenderLeaderboard, 5000);
     setInterval(fetchAndRenderAcceptanceDays, 10000);
+    setInterval(fetchAndRenderOrderStats, 5000);
     setInterval(fetchAndRenderTotalEarnings, 5000);
 
     fetchAndRenderOrders();
     fetchAndRenderMenuItemsStatus();
     fetchAndRenderLeaderboard();
     fetchAndRenderAcceptanceDays();
+    fetchAndRenderOrderStats();
     fetchAndRenderTotalEarnings();
 });
