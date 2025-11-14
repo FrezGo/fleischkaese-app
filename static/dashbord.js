@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Object.keys(order.items).forEach(item => {
                     if (item.includes('Fleischkäse')) {
                         const quantity = order.items[item];
-                        if (item.includes('Ketchup & Senf')) {
+                        if (item.includes('Ketchup') && item.includes('Senf')) {
                             stats['Ketchup & Senf'] += quantity;
                         } else if (item.includes('Ketchup')) {
                             stats['Ketchup'] += quantity;
