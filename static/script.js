@@ -4,41 +4,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const addConfigBtn = document.getElementById('add-config-btn');
     const selectedItemsList = document.getElementById('selected-items');
     const totalPriceElement = document.getElementById('total-price');
+    const itemCountElement = document.getElementById('item-count');
+    const tipDisplayElement = document.getElementById('tip-display');
     const orderForm = document.getElementById('order-form');
     const customerNameInput = document.getElementById('customer-name');
     const tipInput = document.getElementById('tip');
     const leaderboardList = document.getElementById('leaderboard-list');
     const noLeaderboardDataMessage = document.getElementById('no-leaderboard-data');
-    const acceptanceDaysList = document.getElementById('acceptance-days-list');
+    
+    let configCounter = 0;
 
-    async function fetchAndRenderAcceptanceDays() {
-        try {
-            const response = await fetch('/api/acceptance_days');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const acceptanceDays = await response.json();
-            if (acceptanceDays.length === 0) {
-                const popup = document.createElement('div');
-                popup.classList.add('popup-overlay');
-                popup.innerHTML = `
-                    <div class="popup-content">
-                        <h2>Heute geschlossen</h2>
-                        <p>Wir haben heute leider geschlossen. Bitte versuchen Sie es an einem anderen Tag erneut.</p>
+    // Create configuration card HTML
+    function createConfigCard(id, index) {
+        return `
+            <div class="fleischkaese-config-container bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 transition-all duration-300 hover:shadow-2xl" data-config-id="${id}">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-1 rounded-md">#${index + 1}</span>
+                        Konfiguration
+                    </h3>
+                    <button type="button" class="remove-config-btn p-2 rounded-full text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors" title="Entfernen">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Quantity Selector -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">Anzahl</label>
+                        <div class="flex items-center gap-3 bg-slate-50 p-2 rounded-xl border border-slate-200 w-fit">
+                            <button type="button" class="quantity-button minus w-10 h-10 rounded-lg flex items-center justify-center bg-white text-slate-600 hover:bg-slate-100 transition-colors font-bold text-lg">−</button>
+                            <input type="number" value="1" min="0" class="quantity-input w-8 text-center font-bold text-xl text-slate-800 border-none bg-transparent" data-name="Fleischkäse">
+                            <button type="button" class="quantity-button plus w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-tr from-emerald-400 to-teal-500 text-white hover:shadow-md transition-all font-bold text-lg">+</button>
+                        </div>
                     </div>
-                `;
-                document.body.appendChild(popup);
-            } else {
-                const popup = document.querySelector('.popup-overlay');
-                if (popup) {
-                    popup.remove();
-                }
-            }
-        } catch (error) {
-            console.error('Fehler beim Laden der Annahmetage:', error);
-        }
-    }
 
+                    <!-- Sauce Selection -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">Saucen wählen</label>
+                        <div class="flex flex-wrap gap-3">
+                            <label class="relative cursor-pointer group flex items-center">
+                                <input type="checkbox" class="peer sr-only condiment-checkbox" data-condiment="Ketchup">
+                                <div class="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-medium transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 peer-checked:bg-red-500 peer-checked:border-red-500 peer-checked:text-white peer-checked:shadow-lg">
+                                    <div class="w-5 h-5 rounded-md border-2 border-slate-300 flex items-center justify-center peer-checked:border-white peer-checked:bg-white/20 transition-colors">
+                                        <svg class="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    Ketchup
+                                </div>
+                            </label>
+                            
+                            <label class="relative cursor-pointer group flex items-center">
+                                <input type="checkbox" class="peer sr-only condiment-checkbox" data-condiment="Senf">
+                                <div class="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-medium transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 peer-checked:bg-amber-400 peer-checked:border-amber-400 peer-checked:text-white peer-checked:shadow-lg">
+                                    <div class="w-5 h-5 rounded-md border-2 border-slate-300 flex items-center justify-center peer-checked:border-white peer-checked:bg-white/20 transition-colors">
+                                        <svg class="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    Senf
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 
     function updateOrderSummary() {
         selectedItemsList.innerHTML = '';
@@ -49,17 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         configContainers.forEach((container, index) => {
             const quantityInput = container.querySelector('.quantity-input');
-            const quantity = parseInt(quantityInput.value);
+            const quantity = parseInt(quantityInput.value) || 0;
 
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
-                container.querySelectorAll('.condiment-pill.active').forEach(pill => {
-                    condiments.push(pill.dataset.condiment);
+                container.querySelectorAll('.condiment-checkbox:checked').forEach(cb => {
+                    condiments.push(cb.dataset.condiment);
                 });
 
                 let condimentsText = condiments.length > 0 ? ` (${condiments.join(', ')})` : '';
                 const listItem = document.createElement('li');
+                listItem.className = 'text-slate-700 font-medium text-sm';
                 listItem.textContent = `Fleischkäse #${index + 1}${condimentsText} x ${quantity}`;
                 selectedItemsList.appendChild(listItem);
 
@@ -69,216 +105,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!hasItems) {
             const noItemsMessage = document.createElement('li');
+            noItemsMessage.className = 'text-slate-500';
             noItemsMessage.textContent = 'Noch keine Artikel ausgewählt.';
             selectedItemsList.appendChild(noItemsMessage);
         }
 
         const tip = parseFloat(tipInput.value) || 0;
-        totalPrice += tip;
+        const finalTotal = totalPrice + tip;
 
-        totalPriceElement.textContent = `${totalPrice.toFixed(2).replace('.', ',')}€`;
+        itemCountElement.textContent = `${totalPrice.toFixed(2).replace('.', ',')}€`;
+        tipDisplayElement.textContent = `${tip.toFixed(2).replace('.', ',')}€`;
+        totalPriceElement.textContent = `${finalTotal.toFixed(2).replace('.', ',')}€`;
     }
 
     tipInput.addEventListener('input', updateOrderSummary);
 
     function attachEventListeners(container) {
         const quantityInput = container.querySelector('.quantity-input');
-        const checkbox = container.querySelector('input[type="checkbox"][data-name]');
+        const minusBtn = container.querySelector('.quantity-button.minus');
+        const plusBtn = container.querySelector('.quantity-button.plus');
+        const removeBtn = container.querySelector('.remove-config-btn');
+        const condimentCheckboxes = container.querySelectorAll('.condiment-checkbox');
 
-        container.addEventListener('click', (event) => {
-            const target = event.target;
+        minusBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let val = parseInt(quantityInput.value) || 0;
+            if (val > 0) quantityInput.value = val - 1;
+            updateOrderSummary();
+        });
 
-            if (target.classList.contains('quantity-button')) {
-                const delta = target.classList.contains('plus') ? 1 : -1;
-                animateQuantityChange(quantityInput, delta, container);
-            }
+        plusBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let val = parseInt(quantityInput.value) || 0;
+            quantityInput.value = val + 1;
+            updateOrderSummary();
+        });
 
-            if (target.classList.contains('remove-config-btn')) {
-                if (configurationsContainer.querySelectorAll('.fleischkaese-config-container').length > 1) {
-                    container.remove();
-                    updateOrderSummary();
-                } else {
-                    alert('Die letzte Konfiguration kann nicht entfernt werden.');
-                }
-            }
+        quantityInput.addEventListener('change', updateOrderSummary);
+        quantityInput.addEventListener('input', updateOrderSummary);
 
-            const pill = target.closest('.condiment-pill');
-            if (pill) {
-                pill.classList.toggle('active');
-                const checkbox = pill.querySelector('.condiment-checkbox');
-                if (pill.classList.contains('active')) {
-                    checkbox.classList.add('splash-animation');
-                    checkbox.addEventListener('animationend', () => {
-                        checkbox.classList.remove('splash-animation');
-                    }, { once: true });
-                }
+        removeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (configurationsContainer.querySelectorAll('.fleischkaese-config-container').length > 1) {
+                container.remove();
                 updateOrderSummary();
-            }
-        });
-
-        quantityInput.addEventListener('input', () => {
-            let newQuantity = parseInt(quantityInput.value);
-            if (isNaN(newQuantity) || newQuantity < 0) {
-                newQuantity = 0;
-            }
-            quantityInput.value = newQuantity;
-            checkbox.checked = newQuantity > 0;
-            updateOrderSummary();
-        });
-
-        checkbox.addEventListener('change', () => {
-            if (!checkbox.checked) {
-                quantityInput.value = 0;
-            } else if (parseInt(quantityInput.value) === 0) {
-                quantityInput.value = 1;
-            }
-            updateOrderSummary();
-        });
-    }
-
-    /**
-     * Animate and change a numeric input value (bouncy)
-     * @param {HTMLInputElement} input
-     * @param {number} delta
-     * @param {HTMLElement} container - config container to update related checkbox
-     */
-    function animateQuantityChange(input, delta, container) {
-        const oldValue = parseInt(input.value) || 0;
-        const min = parseInt(input.min) || 0;
-        const max = parseInt(input.max) || 99;
-        let newValue = oldValue + delta;
-        if (newValue < min) newValue = min;
-        if (newValue > max) newValue = max;
-        if (newValue === oldValue) return;
-
-        const isIncreasing = delta > 0;
-
-        // quick slide out
-        input.style.transition = 'all 0.1s ease-in';
-        input.style.transform = `translateY(${isIncreasing ? '-10px' : '10px'})`;
-        input.style.opacity = '0';
-
-        setTimeout(() => {
-            input.value = newValue;
-            // bounce back in
-            input.style.transition = 'all 0.3s cubic-bezier(.25,1.5,.5,1)';
-            input.style.transform = 'translateY(0)';
-            input.style.opacity = '1';
-
-            // keep checkbox in sync
-            const checkbox = container.querySelector('input[type="checkbox"][data-name]');
-            if (checkbox) checkbox.checked = parseInt(input.value) > 0;
-
-            updateOrderSummary();
-        }, 100);
-    }
-
-    /* Theme toggle: initialize from localStorage or prefers-color-scheme, allow manual override */
-    (function initThemeToggle() {
-        const themeCheckbox = document.getElementById('check-5');
-        if (!themeCheckbox) return;
-
-        function applyTheme(theme) {
-            if (theme === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
-                themeCheckbox.checked = true;
             } else {
-                document.body.setAttribute('data-theme', 'light');
-                themeCheckbox.checked = false;
-            }
-        }
-
-        // Initialize theme
-        const saved = localStorage.getItem('theme');
-        if (saved) {
-            applyTheme(saved);
-        } else {
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            applyTheme(prefersDark ? 'dark' : 'light');
-        }
-
-        // Handle toggle changes
-        themeCheckbox.addEventListener('change', () => {
-            const theme = themeCheckbox.checked ? 'dark' : 'light';
-            applyTheme(theme);
-            localStorage.setItem('theme', theme);
-        });
-
-        // Handle system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) {
-                applyTheme(e.matches ? 'dark' : 'light');
+                alert('Die letzte Konfiguration kann nicht entfernt werden.');
             }
         });
-    })();
+
+        condimentCheckboxes.forEach(cb => {
+            cb.addEventListener('change', updateOrderSummary);
+        });
+    }
 
     function addNewConfiguration() {
-        const firstConfig = configurationsContainer.querySelector('.fleischkaese-config-container');
-        const newConfig = firstConfig.cloneNode(true);
-
-        const quantityInput = newConfig.querySelector('.quantity-input');
-        const checkbox = newConfig.querySelector('input[type="checkbox"][data-name]');
-        const condimentPills = newConfig.querySelectorAll('.condiment-pill');
-
-        quantityInput.value = '1';
-        checkbox.checked = true;
-        condimentPills.forEach(pill => pill.classList.remove('active'));
-
-        attachEventListeners(newConfig);
-        configurationsContainer.appendChild(newConfig);
+        const newId = `config-${configCounter++}`;
+        const index = configurationsContainer.querySelectorAll('.fleischkaese-config-container').length;
+        const html = createConfigCard(newId, index);
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const newContainer = tempDiv.firstElementChild;
+        configurationsContainer.appendChild(newContainer);
+        attachEventListeners(newContainer);
         updateOrderSummary();
     }
 
-    function resetConfigurations() {
-        configurationsContainer.innerHTML = ''; // Vorherige Konfigurationen löschen
-        const defaultConfig = document.createElement('div');
-        defaultConfig.classList.add('fleischkaese-config-container');
-        defaultConfig.innerHTML = `
-            <div class="config-header">
-                <h4>Fleischkäse-Konfiguration</h4>
-                <button type="button" class="remove-config-btn">Entfernen</button>
-            </div>
-            <div class="menu-item" data-name="Fleischkäse">
-                <label>
-                    <input type="checkbox" data-name="Fleischkäse" checked> Fleischkäse - 1,50€
-                </label>
-                <div class="item-controls">
-                    <div class="quantity-input-container">
-                        <button type="button" class="quantity-button minus" data-item="Fleischkäse">-</button>
-                        <input type="number" value="1" min="0" class="quantity-input" data-name="Fleischkäse">
-                        <button type="button" class="quantity-button plus" data-item="Fleischkäse">+</button>
-                    </div>
-                </div>
-                <div class="condiments">
-                    <div class="condiment-pill" data-condiment="Ketchup">
-                        <span class="condiment-text">Ketchup</span>
-                        <div class="condiment-checkbox"></div>
-                    </div>
-                    <div class="condiment-pill" data-condiment="Senf">
-                        <span class="condiment-text">Senf</span>
-                        <div class="condiment-checkbox"></div>
-                    </div>
-                </div>
-                <div class="sold-out-overlay" style="display: none;">
-                    <span>Ausverkauft</span>
-                </div>
-            </div>
-        `;
-        attachEventListeners(defaultConfig);
-        configurationsContainer.appendChild(defaultConfig);
-    }
     addConfigBtn.addEventListener('click', addNewConfiguration);
 
-    document.querySelectorAll('.fleischkaese-config-container').forEach(container => {
-        attachEventListeners(container);
-    });
+    // Initialize first configuration
+    const initialId = `config-${configCounter++}`;
+    const initialHtml = createConfigCard(initialId, 0);
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = initialHtml;
+    const initialContainer = tempDiv.firstElementChild;
+    configurationsContainer.appendChild(initialContainer);
+    attachEventListeners(initialContainer);
 
+    // Leaderboard
     async function fetchAndRenderLeaderboard() {
         try {
             const response = await fetch('/api/leaderboard/fleischkaese');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const leaderboardData = await response.json();
 
             leaderboardList.innerHTML = '';
@@ -289,30 +197,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 noLeaderboardDataMessage.style.display = 'none';
                 leaderboardData.forEach((entry, index) => {
                     const listItem = document.createElement('li');
-                    listItem.classList.add('leaderboard-entry-card');
-
-                    let detailsBlockHtml = '';
-                    if (Object.keys(entry.details).length > 0) {
-                        const detailsItemsHtml = Object.entries(entry.details).map(([itemName, quantity]) => `
-                            <div class="detail-item">
-                                <span class="item-name">${itemName}:</span> <span class="item-quantity">${quantity}</span>
-                            </div>
-                        `).join('');
-                        detailsBlockHtml = `<div class="details-block">${detailsItemsHtml}</div>`;
-                    }
-
+                    listItem.className = 'bg-white/50 backdrop-blur-sm rounded-lg p-4 border border-white/30 flex justify-between items-center';
+                    
+                    let medal = '🥇';
+                    if (index === 1) medal = '🥈';
+                    if (index === 2) medal = '🥉';
+                    if (index > 2) medal = '⭐';
+                    
                     listItem.innerHTML = `
-                        <div class="leaderboard-header">
-                            <strong>${index + 1}. ${entry.customerName}</strong>
-                            <span class="total-items">${entry.total} Fleischkäse</span>
+                        <div>
+                            <span class="text-xl font-bold mr-2">${medal}</span>
+                            <strong class="text-slate-800">${entry.customerName}</strong>
+                            <span class="text-slate-600 text-sm ml-2">${entry.total} Fleischkäse</span>
                         </div>
-                        ${detailsBlockHtml}
+                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-semibold">#${index + 1}</span>
                     `;
                     leaderboardList.appendChild(listItem);
                 });
             }
         } catch (error) {
-            console.error('Fehler beim Laden des Fleischkäse-Leaderboards:', error);
+            console.error('Fehler beim Laden des Leaderboards:', error);
             noLeaderboardDataMessage.textContent = 'Fehler beim Laden des Leaderboards.';
             noLeaderboardDataMessage.style.display = 'block';
         }
@@ -332,12 +236,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const configContainers = configurationsContainer.querySelectorAll('.fleischkaese-config-container');
 
         configContainers.forEach((container, index) => {
-            const quantity = parseInt(container.querySelector('.quantity-input').value);
+            const quantity = parseInt(container.querySelector('.quantity-input').value) || 0;
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
-                container.querySelectorAll('.condiment-pill.active').forEach(pill => {
-                    condiments.push(pill.dataset.condiment);
+                container.querySelectorAll('.condiment-checkbox:checked').forEach(cb => {
+                    condiments.push(cb.dataset.condiment);
                 });
                 let itemName = `Fleischkäse #${index + 1}`;
                 if (condiments.length > 0) {
@@ -360,13 +264,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            orderForm.classList.add('order-submitted');
-
             const response = await fetch('/api/orders', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
             });
 
@@ -379,21 +279,43 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Ihre Bestellung wurde erfolgreich aufgegeben! Bestell-ID: ' + data.orderId);
 
             orderForm.reset();
-            resetConfigurations();
+            configurationsContainer.innerHTML = '';
+            configCounter = 0;
+            addNewConfiguration();
             updateOrderSummary();
             fetchAndRenderLeaderboard();
 
         } catch (error) {
             console.error('Fehler beim Senden der Bestellung:', error);
-            alert('Es gab einen Fehler beim Senden Ihrer Bestellung: ' + error.message + '. Bitte versuchen Sie es erneut.');
-        } finally {
-            setTimeout(() => {
-                orderForm.classList.remove('order-submitted');
-            }, 500);
+            alert('Es gab einen Fehler beim Senden Ihrer Bestellung: ' + error.message);
         }
     });
 
+    // Theme toggle
+    const themeCheckbox = document.getElementById('check-5');
+    if (themeCheckbox) {
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeCheckbox.checked = true;
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                themeCheckbox.checked = false;
+            }
+        }
+
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+            applyTheme(saved);
+        }
+
+        themeCheckbox.addEventListener('change', () => {
+            const theme = themeCheckbox.checked ? 'dark' : 'light';
+            applyTheme(theme);
+            localStorage.setItem('theme', theme);
+        });
+    }
+
     updateOrderSummary();
     fetchAndRenderLeaderboard();
-    fetchAndRenderAcceptanceDays();
 });
