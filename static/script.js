@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const FLEISCHKAESE_PRICE = 1.50;
+    const DELIVERY_FEE = 0.50;
     const configurationsContainer = document.getElementById('fleischkaese-configurations');
     const addConfigBtn = document.getElementById('add-config-btn');
     const selectedItemsList = document.getElementById('selected-items');
     const totalPriceElement = document.getElementById('total-price');
     const itemCountElement = document.getElementById('item-count');
     const tipDisplayElement = document.getElementById('tip-display');
+    const deliveryFeeElement = document.getElementById('delivery-fee');
     const orderForm = document.getElementById('order-form');
     const customerNameInput = document.getElementById('customer-name');
     const tipInput = document.getElementById('tip');
@@ -91,10 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const tip = parseFloat(tipInput.value) || 0;
-        const finalTotal = totalPrice + tip;
+        const finalTotal = totalPrice + tip + DELIVERY_FEE;
 
         itemCountElement.textContent = `${totalPrice.toFixed(2).replace('.', ',')}€`;
         tipDisplayElement.textContent = `${tip.toFixed(2).replace('.', ',')}€`;
+        deliveryFeeElement.textContent = `${DELIVERY_FEE.toFixed(2).replace('.', ',')}€`;
         totalPriceElement.textContent = `${finalTotal.toFixed(2).replace('.', ',')}€`;
     }
 
@@ -244,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             customerName: customerName,
             items: itemsToOrder,
             tip: parseFloat(tipInput.value) || 0,
+            deliveryFee: DELIVERY_FEE,
             timestamp: new Date().toISOString()
         };
 
@@ -280,10 +284,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (themeCheckbox) {
         function applyTheme(theme) {
             if (theme === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
+                document.documentElement.setAttribute('data-theme', 'dark');
                 themeCheckbox.checked = true;
             } else {
-                document.body.removeAttribute('data-theme');
+                document.documentElement.removeAttribute('data-theme');
                 themeCheckbox.checked = false;
             }
         }
