@@ -14,14 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let configCounter = 0;
 
-    // Create configuration card HTML
-    function createConfigCard(id, index) {
+    // Create configuration card HTML with base model pre-configurations
+    function createConfigCard(id, index, modelType = 'Custom') {
+        const ketchupChecked = (modelType === 'Opus') ? 'checked' : '';
+        const senfChecked = (modelType === 'Opus' || modelType === 'Sonnet') ? 'checked' : '';
+
         return `
-            <div class="fleischkaese-config-container" data-config-id="${id}">
+            <div class="fleischkaese-config-container" data-config-id="${id}" data-model="${modelType}">
                 <div class="config-header">
                     <h3>
                         <span class="config-index">#${index + 1}</span>
-                        Konfiguration
+                        Fleischkäse ${modelType} 4.5
                     </h3>
                     <button type="button" class="remove-config-btn" title="Entfernen">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -31,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <div class="quantity-section">
-                    <label>Anzahl</label>
+                    <label>Instanz-Anzahl (Hyperparameter)</label>
                     <div class="quantity-container">
                         <button type="button" class="quantity-button minus">−</button>
                         <input type="number" value="1" min="0" class="quantity-input" data-name="Fleischkäse">
@@ -40,20 +43,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <div class="sauce-section">
-                    <label>Saucen wählen</label>
+                    <label>Saucen-Gewichtung (Feintuning)</label>
                     <div class="sauces-container">
                         <label class="sauce-label">
-                            <input type="checkbox" class="sauce-checkbox" data-condiment="Ketchup">
+                            <input type="checkbox" class="sauce-checkbox" data-condiment="Ketchup" ${ketchupChecked}>
                             Ketchup
                         </label>
                         <label class="sauce-label">
-                            <input type="checkbox" class="sauce-checkbox" data-condiment="Senf">
+                            <input type="checkbox" class="sauce-checkbox" data-condiment="Senf" ${senfChecked}>
                             Senf
                         </label>
                     </div>
                 </div>
             </div>
         `;
+    }
+
+    function reindexConfigurations() {
+        const configContainers = configurationsContainer.querySelectorAll('.fleischkaese-config-container');
+        configContainers.forEach((container, index) => {
+            const indexSpan = container.querySelector('.config-index');
+            if (indexSpan) {
+                indexSpan.textContent = `#${index + 1}`;
+            }
+        });
     }
 
     function updateOrderSummary() {
@@ -66,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         configContainers.forEach((container, index) => {
             const quantityInput = container.querySelector('.quantity-input');
             const quantity = parseInt(quantityInput.value) || 0;
+            const modelType = container.dataset.model || 'Custom';
 
             if (quantity > 0) {
                 hasItems = true;
@@ -76,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let condimentsText = condiments.length > 0 ? ` (${condiments.join(', ')})` : '';
                 const listItem = document.createElement('li');
-                listItem.textContent = `Fleischkäse #${index + 1}${condimentsText} x ${quantity}`;
+                listItem.textContent = `Fleischkäse ${modelType} #${index + 1}${condimentsText} x ${quantity}`;
                 selectedItemsList.appendChild(listItem);
 
                 totalPrice += quantity * FLEISCHKAESE_PRICE;
@@ -86,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!hasItems) {
             const noItemsMessage = document.createElement('li');
             noItemsMessage.className = 'text-muted';
-            noItemsMessage.textContent = 'Noch keine Artikel ausgewählt.';
+            noItemsMessage.textContent = 'Noch keine Instanzen konfiguriert.';
             selectedItemsList.appendChild(noItemsMessage);
         }
 
@@ -95,7 +109,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         itemCountElement.textContent = `${totalPrice.toFixed(2).replace('.', ',')}€`;
         tipDisplayElement.textContent = `${tip.toFixed(2).replace('.', ',')}€`;
-        totalPriceElement.textContent = `${finalTotal.toFixed(2).replace('.', ',')}€`;
+        
+        const oldTotal = totalPriceElement.textContent;
+        const newTotalStr = `${finalTotal.toFixed(2).replace('.', ',')}€`;
+        totalPriceElement.textContent = newTotalStr;
+
+        // Bouncy spring animation on price change
+        if (oldTotal !== newTotalStr) {
+            totalPriceElement.classList.remove('price-pop');
+            void totalPriceElement.offsetWidth; // Trigger reflow
+            totalPriceElement.classList.add('price-pop');
+        }
     }
 
     tipInput.addEventListener('input', updateOrderSummary);
@@ -110,7 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
         minusBtn.addEventListener('click', (e) => {
             e.preventDefault();
             let val = parseInt(quantityInput.value) || 0;
-            if (val > 0) quantityInput.value = val - 1;
+            if (val > 0) {
+                quantityInput.value = val - 1;
+                // Add spring pop animation to input container
+                const qtyContainer = container.querySelector('.quantity-container');
+                qtyContainer.classList.remove('bounce-click');
+                void qtyContainer.offsetWidth;
+                qtyContainer.classList.add('bounce-click');
+            }
             updateOrderSummary();
         });
 
@@ -118,6 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             let val = parseInt(quantityInput.value) || 0;
             quantityInput.value = val + 1;
+            // Add spring pop animation to input container
+            const qtyContainer = container.querySelector('.quantity-container');
+            qtyContainer.classList.remove('bounce-click');
+            void qtyContainer.offsetWidth;
+            qtyContainer.classList.add('bounce-click');
             updateOrderSummary();
         });
 
@@ -127,40 +163,72 @@ document.addEventListener('DOMContentLoaded', () => {
         removeBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (configurationsContainer.querySelectorAll('.fleischkaese-config-container').length > 1) {
-                container.remove();
-                updateOrderSummary();
+                // Animate removal first
+                container.classList.add('animate-remove');
+                container.addEventListener('animationend', () => {
+                    container.remove();
+                    reindexConfigurations();
+                    updateOrderSummary();
+                });
             } else {
                 alert('Die letzte Konfiguration kann nicht entfernt werden.');
             }
         });
 
         sauceCheckboxes.forEach(cb => {
-            cb.addEventListener('change', updateOrderSummary);
+            cb.addEventListener('change', () => {
+                // Bounce effect on the label
+                const label = cb.closest('.sauce-label');
+                if (label) {
+                    label.classList.remove('bounce-click');
+                    void label.offsetWidth;
+                    label.classList.add('bounce-click');
+                }
+                updateOrderSummary();
+            });
         });
     }
 
-    function addNewConfiguration() {
+    function addNewConfiguration(modelType = 'Custom') {
         const newId = `config-${configCounter++}`;
         const index = configurationsContainer.querySelectorAll('.fleischkaese-config-container').length;
-        const html = createConfigCard(newId, index);
+        const html = createConfigCard(newId, index, modelType);
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
         const newContainer = tempDiv.firstElementChild;
+        
+        // Add entry animation class
+        newContainer.classList.add('animate-add');
+        
         configurationsContainer.appendChild(newContainer);
         attachEventListeners(newContainer);
         updateOrderSummary();
     }
 
-    addConfigBtn.addEventListener('click', addNewConfiguration);
+    addConfigBtn.addEventListener('click', () => addNewConfiguration('Custom'));
 
-    // Initialize first configuration
-    const initialId = `config-${configCounter++}`;
-    const initialHtml = createConfigCard(initialId, 0);
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = initialHtml;
-    const initialContainer = tempDiv.firstElementChild;
-    configurationsContainer.appendChild(initialContainer);
-    attachEventListeners(initialContainer);
+    // Bind comparison card buttons
+    document.querySelectorAll('.btn-model-add').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const model = button.dataset.model;
+            addNewConfiguration(model);
+
+            // Animate button click
+            button.classList.remove('bounce-click');
+            void button.offsetWidth;
+            button.classList.add('bounce-click');
+
+            // Scroll to the configurations container
+            const target = document.getElementById('add-config-btn');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        });
+    });
+
+    // Initialize first configuration (defaults to Custom)
+    addNewConfiguration('Custom');
 
     // Leaderboard
     async function fetchAndRenderLeaderboard() {
@@ -187,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     innerDiv.innerHTML = `
                         <span class="medal">${medal}</span>
                         <strong>${entry.customerName}</strong>
-                        <span style="font-size: 0.9rem; color: #64748b; margin-left: 0.5rem;">${entry.total} Fleischkäse</span>
+                        <span style="font-size: 0.9rem; color: var(--text-secondary); margin-left: 0.5rem;">${entry.total} Fleischkäse</span>
                     `;
                     
                     const rankSpan = document.createElement('span');
@@ -221,13 +289,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         configContainers.forEach((container, index) => {
             const quantity = parseInt(container.querySelector('.quantity-input').value) || 0;
+            const modelType = container.dataset.model || 'Custom';
+
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
                 container.querySelectorAll('.sauce-checkbox:checked').forEach(cb => {
                     condiments.push(cb.dataset.condiment);
                 });
-                let itemName = `Fleischkäse #${index + 1}`;
+                let itemName = `Fleischkäse ${modelType}`;
                 if (condiments.length > 0) {
                     itemName += ` (${condiments.join(', ')})`;
                 }
@@ -260,12 +330,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            alert('Ihre Bestellung wurde erfolgreich aufgegeben! Bestell-ID: ' + data.orderId);
+            alert('Ihre Inferenz-Bestellung wurde erfolgreich eingereiht! Bestell-ID: ' + data.orderId);
 
             orderForm.reset();
             configurationsContainer.innerHTML = '';
             configCounter = 0;
-            addNewConfiguration();
+            addNewConfiguration('Custom');
             updateOrderSummary();
             fetchAndRenderLeaderboard();
 

@@ -39,7 +39,24 @@
     --font-serif: 'Lora', Georgia, serif;
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root[data-theme="dark"] {
+    /* Claude Inspired Color Palette (Dark Theme for Dashboard) */
+    --bg-page: #141413;           /* Deep Dark */
+    --bg-card: #1d1d1c;           /* Elevated dark surface */
+    --bg-white: #252523;          /* Darker containers */
+    --brand-primary: #d97757;     /* Coral Accent */
+    --brand-accent: #c96442;
+    --text-primary: #faf9f5;      /* Ivory */
+    --text-secondary: #b0aea5;    /* Warm Silver */
+    --text-tertiary: #87867f;     /* Stone Gray */
+    --border-light: #282826;      /* Border Dark */
+    --border-warm: #363633;
+    --ring-shadow: 0 0 0 1px #282826;
+    --shadow-whisper: rgba(0, 0, 0, 0.35) 0px 4px 24px;
 }
 
 body {
@@ -50,6 +67,7 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.4s, color 0.4s;
 }
 
 /* ==================== HEADER ==================== */
@@ -63,6 +81,7 @@ header {
     box-shadow: var(--shadow-whisper);
     position: relative;
     overflow: hidden;
+    transition: var(--transition-smooth);
 }
 
 header::before {
@@ -104,7 +123,7 @@ section {
     padding: 2rem;
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-whisper);
-    transition: var(--transition);
+    transition: var(--transition-smooth);
 }
 
 section:hover {
@@ -155,14 +174,14 @@ section h2 {
     flex-direction: column;
     justify-content: space-between;
     min-height: 250px;
-    transition: var(--transition);
+    transition: var(--transition-spring);
     position: relative;
     overflow: hidden;
 }
 
 .order-card:hover {
-    transform: translateY(-2px);
-    box-shadow: rgba(20, 20, 19, 0.05) 0px 4px 16px;
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: rgba(20, 20, 19, 0.06) 0px 8px 24px;
 }
 
 /* Status specific borders */
@@ -262,7 +281,7 @@ section h2 {
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 600;
-    transition: var(--transition);
+    transition: var(--transition-spring);
     text-align: center;
     min-height: 44px; /* Touch target */
     display: flex;
@@ -273,10 +292,11 @@ section h2 {
 .order-card button:hover, .menu-item-card button:hover {
     background-color: var(--border-light);
     color: var(--text-primary);
+    transform: scale(1.03);
 }
 
 .order-card button:active {
-    transform: scale(0.97);
+    transform: scale(0.95);
 }
 
 /* Status transitions specific button highlights */
@@ -313,7 +333,7 @@ section h2 {
 .order-card button.status-button-complete {
     background-color: var(--border-warm);
     color: var(--text-secondary);
-    grid-column: span 2; /* Spans the bottom */
+    grid-column: span 2;
 }
 .order-card button.status-button-complete:hover {
     background-color: var(--status-completed-color);
@@ -463,7 +483,7 @@ section h2 {
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    transition: var(--transition);
+    transition: var(--transition-spring);
     width: 100%;
 }
 
@@ -493,7 +513,7 @@ section h2 {
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 600;
-    transition: var(--transition);
+    transition: var(--transition-spring);
     width: 100%;
 }
 
@@ -528,7 +548,7 @@ section h2 {
     width: 100%;
     background-color: var(--border-warm);
     border-radius: 6px 6px 0 0;
-    transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Spring physics height update! */
     position: relative;
     box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.05);
 }
@@ -586,7 +606,7 @@ footer {
     }
 
     .orders-container {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-template-columns: 1fr;
         gap: 1.25rem;
     }
 

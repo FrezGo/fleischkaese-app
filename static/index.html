@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fleischkäse - Bestellsystem</title>
+    <title>Fleischkäse 4.5 - Das nächste Geschmacksmodell</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -18,15 +18,15 @@
 
     <!-- Main container -->
     <div class="container">
-        <!-- Header -->
+        <!-- Header / Sticky Nav -->
         <header class="header">
             <div class="header-content">
                 <div>
-                    <h1>🍖 Fleischkäse</h1>
-                    <p class="subtitle">Deine Wünsche, unsere Mission - jetzt bestellen!</p>
+                    <h1>🍖 Fleischkäse 4.5</h1>
+                    <p class="subtitle">Anthropic-inspired meat infrastructure</p>
                 </div>
                 <div class="theme-toggle-header">
-                    <label for="check-5" class="theme-label">🌙 Dark</label>
+                    <label for="check-5" class="theme-label">🌙 Dark Mode</label>
                     <input id="check-5" type="checkbox" class="theme-switch">
                 </div>
             </div>
@@ -34,36 +34,110 @@
 
         <!-- Main content -->
         <main class="main-content">
-            <div class="grid-container">
-                <!-- Left column: Configurations & Leaderboard -->
-                <div class="left-column">
-                    <!-- Leaderboard Section -->
-                    <section class="card leaderboard-section">
-                        <h2>🏆 Fleischkäse-Leaderboard</h2>
-                        <div id="leaderboard-content">
-                            <p id="no-leaderboard-data" class="text-muted">Noch keine Bestellungen erfasst.</p>
-                            <ul id="leaderboard-list" class="leaderboard-list">
-                                <!-- Entries inserted by JS -->
-                            </ul>
-                        </div>
-                    </section>
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <span class="hero-badge">JETZT VERFÜGBAR</span>
+                <h1>Fleischkäse 4.5</h1>
+                <p class="hero-subtitle">
+                    Unser bisher intelligentestes und geschmacksintensivstes Modell. Optimiert für maximale Sättigung, perfekt ausbalancierte Krusten-Inferenz und latenzfreie Saucen-Architektur.
+                </p>
+            </section>
 
-                    <!-- Menu Section -->
+            <!-- Model Grid Section -->
+            <section class="model-showcase-section">
+                <h2>Unsere Modelle im Vergleich</h2>
+                <div class="model-grid">
+                    <!-- Opus Card -->
+                    <div class="model-showcase-card opus-card">
+                        <div class="card-header-badge">UNSER LEISTUNGSSTÄRKSTES MODELL</div>
+                        <h3>Fleischkäse Opus 4.5</h3>
+                        <p class="card-desc">Die absolute Spitze für anspruchsvolle Gourmet-Workloads. Bietet unvergleichliche Geschmackstiefe.</p>
+                        <div class="model-specs">
+                            <span class="spec-label">Saucen:</span>
+                            <span class="spec-value">Ketchup + Senf</span>
+                        </div>
+                        <ul class="card-features">
+                            <li>Maximum Flavor Density</li>
+                            <li>High Density Crumb</li>
+                            <li>Ultimate Satiety</li>
+                        </ul>
+                        <button type="button" class="btn btn-model-add btn-opus" data-model="Opus">
+                            Opus konfigurieren
+                        </button>
+                    </div>
+
+                    <!-- Sonnet Card -->
+                    <div class="model-showcase-card sonnet-card">
+                        <div class="card-header-badge-normal">BELIEBTESTES MODELL</div>
+                        <h3>Fleischkäse Sonnet 4.5</h3>
+                        <p class="card-desc">Der perfekte Allrounder. Die optimale Balance aus Performance, Geschmack und Geschwindigkeit.</p>
+                        <div class="model-specs">
+                            <span class="spec-label">Saucen:</span>
+                            <span class="spec-value">Senf (Optimiert)</span>
+                        </div>
+                        <ul class="card-features">
+                            <li>Balanced Performance</li>
+                            <li>Fast Digestibility</li>
+                            <li>Daily Driver Approved</li>
+                        </ul>
+                        <button type="button" class="btn btn-model-add btn-sonnet" data-model="Sonnet">
+                            Sonnet konfigurieren
+                        </button>
+                    </div>
+
+                    <!-- Haiku Card -->
+                    <div class="model-showcase-card haiku-card">
+                        <div class="card-header-badge-normal">SCHNELL & EFFIZIENT</div>
+                        <h3>Fleischkäse Haiku 4.5</h3>
+                        <p class="card-desc">Unser leichtestes Modell. Konzipiert für extrem schnelle Inferenz und minimale Latenz.</p>
+                        <div class="model-specs">
+                            <span class="spec-label">Saucen:</span>
+                            <span class="spec-value">Ohne (Baseline)</span>
+                        </div>
+                        <ul class="card-features">
+                            <li>Lightweight Architecture</li>
+                            <li>Instant Satisfaction</li>
+                            <li>High Efficiency</li>
+                        </ul>
+                        <button type="button" class="btn btn-model-add btn-haiku" data-model="Haiku">
+                            Haiku konfigurieren
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ordering Interface Grid -->
+            <div class="grid-container">
+                <!-- Left column: Active Configurations & Leaderboard -->
+                <div class="left-column">
+                    <!-- Menu / Active Configurations -->
                     <section class="card menu-section">
-                        <h2>🍖 Konfigurationen</h2>
+                        <h2>⚙️ Inferenz-Instanzen</h2>
+                        <p class="section-desc">Passe deine Fleischkäse-Modelle an und verändere ihre Hyperparameter (Saucen und Anzahl).</p>
                         
                         <!-- Configurations Container -->
                         <div id="fleischkaese-configurations" class="configs-container">
-                            <!-- Cards will be generated here -->
+                            <!-- Cards will be generated here by script.js -->
                         </div>
 
-                        <!-- Add Configuration Button -->
+                        <!-- Add Custom Configuration Button -->
                         <button type="button" id="add-config-btn" class="btn btn-primary btn-full">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
-                            Weitere Konfiguration hinzufügen
+                            Custom-Instanz hinzufügen
                         </button>
+                    </section>
+
+                    <!-- Leaderboard Section -->
+                    <section class="card leaderboard-section">
+                        <h2>🏆 Fleischkäse-Leaderboard</h2>
+                        <div id="leaderboard-content">
+                            <p id="no-leaderboard-data" class="text-muted">Noch keine Inferenzdaten erfasst.</p>
+                            <ul id="leaderboard-list" class="leaderboard-list">
+                                <!-- Entries inserted by JS -->
+                            </ul>
+                        </div>
                     </section>
                 </div>
 
@@ -71,23 +145,23 @@
                 <div class="right-column">
                     <!-- Order Summary -->
                     <section class="card summary-section sticky-top">
-                        <h2>🛒 Zusammenfassung</h2>
+                        <h2>🛒 Inferenz-Zusammenfassung</h2>
                         
                         <ul id="selected-items" class="items-list">
-                            <li class="text-muted">Noch keine Artikel ausgewählt.</li>
+                            <li class="text-muted">Noch keine Instanzen konfiguriert.</li>
                         </ul>
 
                         <div class="price-box">
                             <div class="price-row">
-                                <span>Artikel:</span>
+                                <span>Basiskosten (Artikel):</span>
                                 <span id="item-count" class="price-value">0,00€</span>
                             </div>
                             <div class="price-row">
-                                <span>Trinkgeld:</span>
+                                <span>Trinkgeld (Tip):</span>
                                 <span id="tip-display" class="price-value">0,00€</span>
                             </div>
                             <div class="price-row total">
-                                <span>Gesamt:</span>
+                                <span>Gesamtpreis:</span>
                                 <span id="total-price" class="price-value">0,00€</span>
                             </div>
                         </div>
@@ -95,8 +169,8 @@
                         <!-- Customer Info Form -->
                         <form id="order-form" class="form">
                             <div class="form-group">
-                                <label for="customer-name">Ihr Name</label>
-                                <input type="text" id="customer-name" required placeholder="Ihr Name...">
+                                <label for="customer-name">Developer Name (Ihr Name)</label>
+                                <input type="text" id="customer-name" required placeholder="Name eingeben...">
                             </div>
 
                             <div class="form-group">
@@ -108,7 +182,7 @@
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
-                                Bestellung abschicken
+                                Inferenz starten (Bestellen)
                             </button>
                         </form>
                     </section>
