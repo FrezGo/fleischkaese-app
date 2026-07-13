@@ -4,124 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fleischkäse - Bestellsystem</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
+<body>
     <!-- Background decorative elements -->
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-200/20 rounded-full blur-3xl" />
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-200/20 rounded-full blur-3xl" />
+    <div class="bg-decoration">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
     </div>
 
     <!-- Main container -->
-    <div class="relative z-10">
+    <div class="container">
         <!-- Header -->
-        <header class="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 text-white py-8 px-4 sm:px-6 lg:px-8 shadow-2xl">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex items-center justify-between mb-2">
-                    <div>
-                        <h1 class="text-4xl sm:text-5xl font-extrabold">Fleischkäse</h1>
-                        <p class="text-slate-300 mt-2 text-lg">Deine Wünsche, unsere Mission - jetzt bestellen!</p>
-                    </div>
-                    <div class="hidden sm:flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
-                        <span class="text-sm font-medium">Theme:</span>
-                        <div class="checkbox-wrapper-5">
-                            <div class="check">
-                                <input id="check-5" type="checkbox">
-                                <label for="check-5"></label>
-                            </div>
-                        </div>
-                    </div>
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <h1>🍖 Fleischkäse</h1>
+                    <p class="subtitle">Deine Wünsche, unsere Mission - jetzt bestellen!</p>
+                </div>
+                <div class="theme-toggle-header">
+                    <label for="check-5" class="theme-label">🌙 Dark</label>
+                    <input id="check-5" type="checkbox" class="theme-switch">
                 </div>
             </div>
         </header>
 
         <!-- Main content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left column: Configurations -->
-                <div class="lg:col-span-2">
+        <main class="main-content">
+            <div class="grid-container">
+                <!-- Left column: Configurations & Leaderboard -->
+                <div class="left-column">
                     <!-- Leaderboard Section -->
-                    <section class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 mb-8">
-                        <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                            <span class="text-2xl">🏆</span>
-                            Fleischkäse-Leaderboard
-                        </h2>
-                        <div id="leaderboard-content" class="space-y-3">
-                            <p id="no-leaderboard-data" class="text-slate-500">Noch keine Bestellungen erfasst.</p>
-                            <ul id="leaderboard-list" class="space-y-2">
-                                <!-- Leaderboard entries will be inserted here -->
+                    <section class="card leaderboard-section">
+                        <h2>🏆 Fleischkäse-Leaderboard</h2>
+                        <div id="leaderboard-content">
+                            <p id="no-leaderboard-data" class="text-muted">Noch keine Bestellungen erfasst.</p>
+                            <ul id="leaderboard-list" class="leaderboard-list">
+                                <!-- Entries inserted by JS -->
                             </ul>
                         </div>
                     </section>
 
                     <!-- Menu Section -->
-                    <section class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6">
-                        <h2 class="text-2xl font-bold text-slate-800 mb-6">🍖 Fleischkäse-Konfigurationen</h2>
+                    <section class="card menu-section">
+                        <h2>🍖 Konfigurationen</h2>
                         
                         <!-- Configurations Container -->
-                        <div id="fleischkaese-configurations" class="space-y-4 mb-6">
+                        <div id="fleischkaese-configurations" class="configs-container">
                             <!-- Cards will be generated here -->
                         </div>
 
                         <!-- Add Configuration Button -->
-                        <button type="button" id="add-config-btn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold text-lg shadow-lg shadow-indigo-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 group">
-                            <svg class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button type="button" id="add-config-btn" class="btn btn-primary btn-full">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
-                            <span>Weitere Konfiguration hinzufügen</span>
+                            Weitere Konfiguration hinzufügen
                         </button>
                     </section>
                 </div>
 
                 <!-- Right column: Summary and Form -->
-                <div class="lg:col-span-1">
+                <div class="right-column">
                     <!-- Order Summary -->
-                    <section class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 mb-6 sticky top-8">
-                        <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            Zusammenfassung
-                        </h2>
+                    <section class="card summary-section sticky-top">
+                        <h2>🛒 Zusammenfassung</h2>
                         
-                        <ul id="selected-items" class="space-y-2 mb-6">
-                            <li class="text-slate-500">Noch keine Artikel ausgewählt.</li>
+                        <ul id="selected-items" class="items-list">
+                            <li class="text-muted">Noch keine Artikel ausgewählt.</li>
                         </ul>
 
-                        <div class="bg-slate-50 rounded-xl p-4 mb-4">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-slate-600">Artikel:</span>
-                                <span id="item-count" class="font-bold text-slate-800">0€</span>
+                        <div class="price-box">
+                            <div class="price-row">
+                                <span>Artikel:</span>
+                                <span id="item-count" class="price-value">0,00€</span>
                             </div>
-                            <div class="flex justify-between items-center mb-4 pb-4 border-b border-slate-200">
-                                <span class="text-slate-600">Trinkgeld:</span>
-                                <span id="tip-display" class="font-bold text-slate-800">0€</span>
+                            <div class="price-row">
+                                <span>Trinkgeld:</span>
+                                <span id="tip-display" class="price-value">0,00€</span>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg font-bold text-slate-800">Gesamt:</span>
-                                <span id="total-price" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">0,00€</span>
+                            <div class="price-row total">
+                                <span>Gesamt:</span>
+                                <span id="total-price" class="price-value">0,00€</span>
                             </div>
                         </div>
 
                         <!-- Customer Info Form -->
-                        <form id="order-form" class="space-y-4">
-                            <div>
-                                <label for="customer-name" class="block text-sm font-semibold text-slate-700 mb-2">Ihr Name</label>
-                                <input type="text" id="customer-name" required class="w-full px-4 py-3 rounded-lg border-2 border-slate-200 focus:border-blue-500 focus:outline-none transition-colors bg-white text-slate-800 placeholder-slate-400" placeholder="Ihr Name...">
+                        <form id="order-form" class="form">
+                            <div class="form-group">
+                                <label for="customer-name">Ihr Name</label>
+                                <input type="text" id="customer-name" required placeholder="Ihr Name...">
                             </div>
 
-                            <div>
-                                <label for="tip" class="block text-sm font-semibold text-slate-700 mb-2">Trinkgeld (€)</label>
-                                <input type="number" id="tip" min="0" step="0.10" value="0" class="w-full px-4 py-3 rounded-lg border-2 border-slate-200 focus:border-blue-500 focus:outline-none transition-colors bg-white text-slate-800">
+                            <div class="form-group">
+                                <label for="tip">Trinkgeld (€)</label>
+                                <input type="number" id="tip" min="0" step="0.10" value="0">
                             </div>
 
-                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-lg shadow-lg shadow-emerald-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button type="submit" class="btn btn-success btn-full">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
-                                <span>Bestellung abschicken</span>
+                                Bestellung abschicken
                             </button>
                         </form>
                     </section>
@@ -131,6 +115,5 @@
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>
