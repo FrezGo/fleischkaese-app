@@ -17,58 +17,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create configuration card HTML
     function createConfigCard(id, index) {
         return `
-            <div class="fleischkaese-config-container bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 transition-all duration-300 hover:shadow-2xl" data-config-id="${id}">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-1 rounded-md">#${index + 1}</span>
+            <div class="fleischkaese-config-container" data-config-id="${id}">
+                <div class="config-header">
+                    <h3>
+                        <span class="config-index">#${index + 1}</span>
                         Konfiguration
                     </h3>
-                    <button type="button" class="remove-config-btn p-2 rounded-full text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors" title="Entfernen">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    <button type="button" class="remove-config-btn" title="Entfernen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
                 </div>
 
-                <div class="space-y-6">
-                    <!-- Quantity Selector -->
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">Anzahl</label>
-                        <div class="flex items-center gap-3 bg-slate-50 p-2 rounded-xl border border-slate-200 w-fit">
-                            <button type="button" class="quantity-button minus w-10 h-10 rounded-lg flex items-center justify-center bg-white text-slate-600 hover:bg-slate-100 transition-colors font-bold text-lg">−</button>
-                            <input type="number" value="1" min="0" class="quantity-input w-8 text-center font-bold text-xl text-slate-800 border-none bg-transparent" data-name="Fleischkäse">
-                            <button type="button" class="quantity-button plus w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-tr from-emerald-400 to-teal-500 text-white hover:shadow-md transition-all font-bold text-lg">+</button>
-                        </div>
+                <div class="quantity-section">
+                    <label>Anzahl</label>
+                    <div class="quantity-container">
+                        <button type="button" class="quantity-button minus">−</button>
+                        <input type="number" value="1" min="0" class="quantity-input" data-name="Fleischkäse">
+                        <button type="button" class="quantity-button plus">+</button>
                     </div>
+                </div>
 
-                    <!-- Sauce Selection -->
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">Saucen wählen</label>
-                        <div class="flex flex-wrap gap-3">
-                            <label class="relative cursor-pointer group flex items-center">
-                                <input type="checkbox" class="peer sr-only condiment-checkbox" data-condiment="Ketchup">
-                                <div class="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-medium transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 peer-checked:bg-red-500 peer-checked:border-red-500 peer-checked:text-white peer-checked:shadow-lg">
-                                    <div class="w-5 h-5 rounded-md border-2 border-slate-300 flex items-center justify-center peer-checked:border-white peer-checked:bg-white/20 transition-colors">
-                                        <svg class="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    Ketchup
-                                </div>
-                            </label>
-                            
-                            <label class="relative cursor-pointer group flex items-center">
-                                <input type="checkbox" class="peer sr-only condiment-checkbox" data-condiment="Senf">
-                                <div class="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-medium transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 peer-checked:bg-amber-400 peer-checked:border-amber-400 peer-checked:text-white peer-checked:shadow-lg">
-                                    <div class="w-5 h-5 rounded-md border-2 border-slate-300 flex items-center justify-center peer-checked:border-white peer-checked:bg-white/20 transition-colors">
-                                        <svg class="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    Senf
-                                </div>
-                            </label>
-                        </div>
+                <div class="sauce-section">
+                    <label>Saucen wählen</label>
+                    <div class="sauces-container">
+                        <label class="sauce-label">
+                            <input type="checkbox" class="sauce-checkbox" data-condiment="Ketchup">
+                            Ketchup
+                        </label>
+                        <label class="sauce-label">
+                            <input type="checkbox" class="sauce-checkbox" data-condiment="Senf">
+                            Senf
+                        </label>
                     </div>
                 </div>
             </div>
@@ -89,13 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
-                container.querySelectorAll('.condiment-checkbox:checked').forEach(cb => {
+                container.querySelectorAll('.sauce-checkbox:checked').forEach(cb => {
                     condiments.push(cb.dataset.condiment);
                 });
 
                 let condimentsText = condiments.length > 0 ? ` (${condiments.join(', ')})` : '';
                 const listItem = document.createElement('li');
-                listItem.className = 'text-slate-700 font-medium text-sm';
                 listItem.textContent = `Fleischkäse #${index + 1}${condimentsText} x ${quantity}`;
                 selectedItemsList.appendChild(listItem);
 
@@ -105,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!hasItems) {
             const noItemsMessage = document.createElement('li');
-            noItemsMessage.className = 'text-slate-500';
+            noItemsMessage.className = 'text-muted';
             noItemsMessage.textContent = 'Noch keine Artikel ausgewählt.';
             selectedItemsList.appendChild(noItemsMessage);
         }
@@ -125,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const minusBtn = container.querySelector('.quantity-button.minus');
         const plusBtn = container.querySelector('.quantity-button.plus');
         const removeBtn = container.querySelector('.remove-config-btn');
-        const condimentCheckboxes = container.querySelectorAll('.condiment-checkbox');
+        const sauceCheckboxes = container.querySelectorAll('.sauce-checkbox');
 
         minusBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -154,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        condimentCheckboxes.forEach(cb => {
+        sauceCheckboxes.forEach(cb => {
             cb.addEventListener('change', updateOrderSummary);
         });
     }
@@ -197,21 +177,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 noLeaderboardDataMessage.style.display = 'none';
                 leaderboardData.forEach((entry, index) => {
                     const listItem = document.createElement('li');
-                    listItem.className = 'bg-white/50 backdrop-blur-sm rounded-lg p-4 border border-white/30 flex justify-between items-center';
                     
                     let medal = '🥇';
                     if (index === 1) medal = '🥈';
                     if (index === 2) medal = '🥉';
                     if (index > 2) medal = '⭐';
                     
-                    listItem.innerHTML = `
-                        <div>
-                            <span class="text-xl font-bold mr-2">${medal}</span>
-                            <strong class="text-slate-800">${entry.customerName}</strong>
-                            <span class="text-slate-600 text-sm ml-2">${entry.total} Fleischkäse</span>
-                        </div>
-                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-semibold">#${index + 1}</span>
+                    const innerDiv = document.createElement('div');
+                    innerDiv.innerHTML = `
+                        <span class="medal">${medal}</span>
+                        <strong>${entry.customerName}</strong>
+                        <span style="font-size: 0.9rem; color: #64748b; margin-left: 0.5rem;">${entry.total} Fleischkäse</span>
                     `;
+                    
+                    const rankSpan = document.createElement('span');
+                    rankSpan.className = 'leaderboard-rank';
+                    rankSpan.textContent = `#${index + 1}`;
+                    
+                    listItem.appendChild(innerDiv);
+                    listItem.appendChild(rankSpan);
                     leaderboardList.appendChild(listItem);
                 });
             }
@@ -240,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quantity > 0) {
                 hasItems = true;
                 const condiments = [];
-                container.querySelectorAll('.condiment-checkbox:checked').forEach(cb => {
+                container.querySelectorAll('.sauce-checkbox:checked').forEach(cb => {
                     condiments.push(cb.dataset.condiment);
                 });
                 let itemName = `Fleischkäse #${index + 1}`;
@@ -299,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.setAttribute('data-theme', 'dark');
                 themeCheckbox.checked = true;
             } else {
-                document.body.setAttribute('data-theme', 'light');
+                document.body.removeAttribute('data-theme');
                 themeCheckbox.checked = false;
             }
         }
