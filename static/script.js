@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const FLEISCHKAESE_PRICE = 1.50;
+    const DELIVERY_FEE = 0.05;
     const configurationsContainer = document.getElementById('fleischkaese-configurations');
     const addConfigBtn = document.getElementById('add-config-btn');
     const selectedItemsList = document.getElementById('selected-items');
     const totalPriceElement = document.getElementById('total-price');
     const itemCountElement = document.getElementById('item-count');
     const tipDisplayElement = document.getElementById('tip-display');
+    const deliveryFeeDisplayElement = document.getElementById('delivery-fee-display');
     const orderForm = document.getElementById('order-form');
     const customerNameInput = document.getElementById('customer-name');
     const tipInput = document.getElementById('tip');
@@ -105,10 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const tip = parseFloat(tipInput.value) || 0;
-        const finalTotal = totalPrice + tip;
+        const currentDeliveryFee = hasItems ? DELIVERY_FEE : 0;
+        const finalTotal = totalPrice + tip + currentDeliveryFee;
 
         itemCountElement.textContent = `${totalPrice.toFixed(2).replace('.', ',')}€`;
         tipDisplayElement.textContent = `${tip.toFixed(2).replace('.', ',')}€`;
+        if (deliveryFeeDisplayElement) {
+            deliveryFeeDisplayElement.textContent = `${currentDeliveryFee.toFixed(2).replace('.', ',')}€`;
+        }
         
         const oldTotal = totalPriceElement.textContent;
         const newTotalStr = `${finalTotal.toFixed(2).replace('.', ',')}€`;
@@ -310,10 +316,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const currentDeliveryFee = hasItems ? DELIVERY_FEE : 0;
         const orderData = {
             customerName: customerName,
             items: itemsToOrder,
             tip: parseFloat(tipInput.value) || 0,
+            deliveryFee: currentDeliveryFee,
             timestamp: new Date().toISOString()
         };
 

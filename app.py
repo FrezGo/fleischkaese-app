@@ -108,7 +108,8 @@ def receive_order():
     for item_name, quantity in items.items():
         if item_name.startswith("Fleischkäse"):
             fleischkaese_quantity += quantity
-    total_price = fleischkaese_quantity * FLEISCHKAESE_PRICE + tip
+    delivery_fee = 0.05 if fleischkaese_quantity > 0 else 0
+    total_price = fleischkaese_quantity * FLEISCHKAESE_PRICE + tip + delivery_fee
 
     new_order = {
         "id": order_id_counter,
